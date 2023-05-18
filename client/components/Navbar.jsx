@@ -4,7 +4,7 @@ import Link from 'next/Link'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { Context } from '@/context';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 const raleway = Raleway({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] })
 

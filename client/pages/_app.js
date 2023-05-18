@@ -1,7 +1,8 @@
 import '@/styles/globals.css'
-import { ToastContainer } from 'react-toastify'
+// import { ToastContainer } from 'react-toastify'
 import Navbar from '../components/Navbar'
-import 'react-toastify/dist/ReactToastify.css'
+// import 'react-toastify/dist/ReactToastify.css'
+import { Toaster } from 'react-hot-toast';
 import { Raleway } from '@next/font/google'
 import Footer from '@/components/Footer'
 import { Provider } from '@/context'
@@ -13,7 +14,7 @@ export default function App({ Component, pageProps }) {
         <Provider>
             <div className='flex flex-col min-h-screen'>
                 <div className={raleway.className}>
-                    <ToastContainer  />
+                    <Toaster  />
                 </div>
                 <Navbar />
                 <div className='mb-auto'>

@@ -6,7 +6,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
+import toast from 'react-hot-toast';
 
 const raleway = Raleway({ subsets: ['latin'] })
 
