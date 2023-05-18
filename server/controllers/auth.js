@@ -73,7 +73,7 @@ export const login = async (req, res) => {
         res.json(user)
     } catch (error) {
         console.log(error);
-        return res.send.status(400).send("Error occured")
+        return res.sendStatus(400).send("Error occured")
     }
     // res.send('Register user')
 };

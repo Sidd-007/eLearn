@@ -86,12 +86,13 @@ function Header() {
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>
                                 </Link>
-                                <Link href="/about" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
-                                    <li className={router.pathname == "/about" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
-                                        <span>About Us</span>
+                                {user && user.role && user.role.includes("Admin") ? (<Link href="/admin/course/create" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                    <li className={router.pathname == "/create-course" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                        <span>Create Course</span>
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>
-                                </Link>
+                                </Link>) : null}
+                                
 
                                 {/* 1st level: hover */}
 
