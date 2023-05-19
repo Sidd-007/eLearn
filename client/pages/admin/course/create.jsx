@@ -1,12 +1,16 @@
 import AdminRoute from "@/components/routes/AdminRoute"
 import { useState } from "react"
 import { Raleway } from '@next/font/google'
-
+import Resizer from "react-image-file-resizer"
+import { toast } from "react-hot-toast"
+import axios from "axios"
+import { useRouter } from "next/router"
 
 const raleway = Raleway({ subsets: ['latin'] })
 
 const CreateCourse = () => {
 
+    const router  = useRouter()
     const [values, setValues] = useState({
         name: '',
         description: ' ',
@@ -17,6 +21,7 @@ const CreateCourse = () => {
         loading: false,
     })
 
+    const [image, setImage] = useState({});
     const [preview, setPreview] = useState('')
 
     const handleChange = (e) => {
@@ -24,13 +29,64 @@ const CreateCourse = () => {
     }
 
     const handleImage = (e) => {
-        // setPreview(window.URL.createObjectURL(e.target.files[0]))
+        let file = e.target.files[0];
+        setPreview(window.URL.createObjectURL(file))
+        setValues({ ...values, loading: true });
+
+        Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
+            try {
+                let { data } = await axios.post('/api/course/upload-image', {
+                    image: uri
+                });
+
+                toast.success("Image Uploaded, You can Remove Image if you want");
+                setImage(data)
+                setValues({ ...values, loading: false });
+
+
+            } catch (error) {
+                console.log(error)
+                setValues({ ...values, loading: false });
+                toast.error('Image Upload Failed, Try Later!!!')
+            }
+        })
+    }
+    const handleImageRemove = async () => {
+        // console.log("Remove Image")
+        try {
+            setValues({ ...values, loading: true });
+            const res = await axios.post('/api/course/remove-image', { image })
+            setImage({})
+            setPreview('')
+            setValues({ ...values, loading: false });
+        } catch (error) {
+            console.log(error)
+            setValues({ ...values, loading: false });
+            toast.error('Image Upload Failed, Try Later!!!')
+        }
+
 
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(values)
+        // console.log(values)
+
+        const { data } = await axios.post('/api/course', {
+            ...values, image
+        })
+
+        try {
+            const { data } = await axios.post('/api/course', {
+                ...values, image
+            })
+            toast.success('Cool!! Now you can add Lessons')
+            router.push('/admin')
+        } catch (error) {
+            console.log(error)
+            // setValues({ ...values, loading: false });
+            toast.error(error.response.data)
+        }
     }
 
     const children = []
@@ -107,9 +163,23 @@ const CreateCourse = () => {
                                 <div className="w-full mb-2 mt-10">
                                     <div className='flex mb-2 '>
                                         <span class="block  text-[16px]  font-medium text-gray-900 ">Course Images:</span>
-                                        {/* <div className='ml-2'>
-                                    <img id="blah" src="" className='rounded-full w-16 h-16 bg-contain' alt="" />
-                                </div> */}
+                                        {preview && (
+                                            <div className='ml-2 flex '>
+                                                <img id="blah" src={preview} className='rounded-full w-6 h-6 bg-contain' alt="" />
+                                                <svg onClick={handleImageRemove} fill="red" height="10px" width="10px" version="1.1" id="Capa_1"
+                                                    viewBox="0 0 283.194 283.194" >
+                                                    <g>
+                                                        <path d="M141.597,32.222c-60.31,0-109.375,49.065-109.375,109.375s49.065,109.375,109.375,109.375s109.375-49.065,109.375-109.375
+		S201.907,32.222,141.597,32.222z M50.222,141.597c0-50.385,40.991-91.375,91.375-91.375c22.268,0,42.697,8.01,58.567,21.296
+		L71.517,200.164C58.232,184.293,50.222,163.865,50.222,141.597z M141.597,232.972c-21.648,0-41.558-7.572-57.232-20.2
+		L212.772,84.366c12.628,15.674,20.2,35.583,20.2,57.231C232.972,191.982,191.981,232.972,141.597,232.972z"/>
+                                                        <path d="M141.597,0C63.52,0,0,63.52,0,141.597s63.52,141.597,141.597,141.597s141.597-63.52,141.597-141.597S219.674,0,141.597,0z
+		 M141.597,265.194C73.445,265.194,18,209.749,18,141.597S73.445,18,141.597,18s123.597,55.445,123.597,123.597
+		S209.749,265.194,141.597,265.194z"/>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="flex  justify-around">
                                         <input
@@ -117,13 +187,12 @@ const CreateCourse = () => {
                                             type="file" onChange={handleImage} />
                                     </div>
                                 </div>
- 
+
                                 <div className="flex justify-center">
                                     <button
                                         onClick={handleSubmit}
-                                        disabled={values.loading || values.uploading}
                                         className="w-1/2  mt-6 py-2 rounded bg-[#4540e1da] hover:bg-[#4540E1] transition-all ease-in-out duration-200 text-gray-100 focus:outline-none cursor-pointer">
-                                        {values.loading ? 'Saving...' : 'Save & Continue'}
+                                        Save & Continue
                                     </button>
                                 </div>
                             </div>
