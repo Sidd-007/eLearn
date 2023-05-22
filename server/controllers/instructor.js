@@ -1,10 +1,11 @@
 import User from "../models/user";
+import Course from "../models/course";
 // import stripe from "stripe"
 import queryString from 'query-string'
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
-export const makeAdmin = async (req, res, next) => {
+export const makeInstructor = async (req, res, next) => {
     // 1. find user from db
     const user = await User.findById(req.auth._id).exec();
 
@@ -33,16 +34,27 @@ export const makeAdmin = async (req, res, next) => {
 }
 
 
-export const currentAdmin = async (req, res) => {
+export const currentInstructor = async (req, res) => {
     try {
 
         let user = await User.findById(req.auth._id).select("-password").exec();
 
-        if(!user.role.includes("Admin")) {
+        if(!user.role.includes("Instructor")) {
             return res.sendStatus(403);
         } else {
             res.json({ ok : true });
         }
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const instructorCourses = async (req,res) => {
+    try {
+        const courses = await Course.find({instructor: req.auth._id}).sort({createdAt: -1}).exec();
+
+        res.json(courses);
         
     } catch (error) {
         console.log(error)

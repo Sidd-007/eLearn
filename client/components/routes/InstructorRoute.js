@@ -4,14 +4,14 @@ import { useContext, useEffect, useState } from "react"
 import Loader from "../Loader"
 
 
-const AdminRoute = ({ children }) => {
+const InstructorRoute = ({ children }) => {
     const [ok, setOk] = useState(false)
     const { state: { user }, } = useContext(Context)
     // console.log(user)
     useEffect(() => {
-        const fetchAdmin = async () => {
+        const fetchInstructor = async () => {
             try {
-                const { data } = await axios.get('/api/current-admin')
+                const { data } = await axios.get('/api/current-instructor')
                 // console.log(data)
                 if (data.ok) setOk(true)
             } catch (error) {
@@ -19,7 +19,7 @@ const AdminRoute = ({ children }) => {
                 setOk(false)
             }
         }
-        fetchAdmin();
+        fetchInstructor();
     }, [])
     return (
         <div><>{children}</>
@@ -27,4 +27,4 @@ const AdminRoute = ({ children }) => {
 
     )
 }
-export default AdminRoute
+export default InstructorRoute

@@ -49,7 +49,10 @@ const courseSchema = new mongoose.Schema({
         default: 9.99
     },
     image: {},
-    category: String,
+    category: {
+        type: String,
+        default:'',
+    },
     publised: {
         type: Boolean,
         default: false,
@@ -58,7 +61,7 @@ const courseSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-    admin: {
+    instructor: {
         type: ObjectId,
         ref: "User",
         required: true,

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Raleway } from '@next/font/google'
-import Link from 'next/Link'
+// import Link from 'next/Link'
+import Link from 'next/link'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { Context } from '@/context';
@@ -53,9 +54,9 @@ function Header() {
     return (
         <div className={raleway.className}>
 
-            <header className="relative w-full z-30">
+            <header className="relative w-full z-30 shadow-md shadow-[#4540e129]">
                 <div className="max-w-full xl:mx-24 px-4 sm:px-6">
-                    <div className="flex items-center justify-between h-20">
+                    <div className="flex  items-center justify-between h-20">
 
                         {/* Site branding */}
                         <div className="flex-shrink-0 mr-4">
@@ -71,7 +72,6 @@ function Header() {
 
                         {/* Desktop navigation */}
                         <nav className="hidden xl:ml-24 md:flex md:flex-grow">
-
                             {/* Desktop menu spans */}
                             <ul className="flex flex-grow justify-end flex-wrap items-center">
                                 <Link href="/" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200">
@@ -86,8 +86,8 @@ function Header() {
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>
                                 </Link>
-                                {user && user.role && user.role.includes("Admin") ? (<Link href="/admin/course/create" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
-                                    <li className={router.pathname == "/create-course" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                {user && user.role && user.role.includes("Instructor") ? (<Link href="/instructor/course/create" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                    <li className={router.pathname == "/instructor/course/create" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
                                         <span>Create Course</span>
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>

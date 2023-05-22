@@ -76,14 +76,14 @@ export const removeImage = async (req, res) => {
 export const createCourse = async (req, res) => {
     // console.log("Create Course", req.body);
     try {
-        // const alreadyExist = await Course.findOne({
-        //     name: req.body.name
-        // })
-        // if (alreadyExist) return res.status(400).send("Title is Already Taken, Try Again")
+        const alreadyExist = await Course.findOne({
+            name: req.body.name
+        })
+        if (alreadyExist) return res.status(400).send("Title is Already Taken, Try Again")
 
         const course = await new Course({
             slug: slugify(req.body.name),
-            admin: req.auth._id,
+            instructor: req.auth._id,
             ...req.body,
         }).save();
 
@@ -91,5 +91,17 @@ export const createCourse = async (req, res) => {
     } catch (error) {
         console.log(error)
         return res.status(400).send('Failed to Create Course, Try Again.')
+    }
+}
+
+export const getSingleCourse = async (req, res) => {
+    try {
+
+        const course = await Course.findOne({ slug: req.params.slug }).populate('instructor', "_id name").exec();
+
+        res.json(course)
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send('Failed to Fetch the Course, Try Again.')
     }
 }

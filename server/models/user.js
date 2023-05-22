@@ -28,18 +28,14 @@ const userSchema = new Schema
             },
             role: {
                 type: [String],
-                default: ["Subscriber"],
-                enum: ["Subscriber", "Admin"],
+                default: ["Student"],
+                enum: ["Student","Instructor", "Admin"],
             },
             reviews: [],
             passwordResetCode: {
                 data: String,
                 default:  "",
             },
-            
-            stripe_account_id: "",
-            stripe_seller: {},
-            stripeSession: {},
 
         },
 

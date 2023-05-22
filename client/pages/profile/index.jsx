@@ -15,14 +15,13 @@ const Profile = () => {
     return (
         <UserRoute>
             <div>
-                <div>
-                    
+                <div>   
                     {user &&
                         (
                             <div className="max-w-full mx-24 px-4 sm:px-6">
                                 {/* {user.name} */}
                                 <div className="flex ">
-                                    <div className="w-[480px] h-32 shadow-xl">
+                                    <div className="w-[450px] h-32 shadow-xl">
                                         <img src={user.picture} className='' />
                                     </div>
                                     <div className="mx-20">

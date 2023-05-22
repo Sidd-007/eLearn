@@ -1,16 +1,16 @@
-import AdminRoute from "@/components/routes/AdminRoute"
-import { useState } from "react"
+import InstructorRoute from "@/components/routes/InstructorRoute"
 import { Raleway } from '@next/font/google'
-import Resizer from "react-image-file-resizer"
-import { toast } from "react-hot-toast"
 import axios from "axios"
 import { useRouter } from "next/router"
+import { useState } from "react"
+import { toast } from "react-hot-toast"
+import Resizer from "react-image-file-resizer"
 
 const raleway = Raleway({ subsets: ['latin'] })
 
 const CreateCourse = () => {
 
-    const router  = useRouter()
+    const router = useRouter()
     const [values, setValues] = useState({
         name: '',
         description: ' ',
@@ -70,21 +70,18 @@ const CreateCourse = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log(values)
-
-        const { data } = await axios.post('/api/course', {
-            ...values, image
-        })
 
         try {
+            setValues({ ...values, loading: true });
             const { data } = await axios.post('/api/course', {
                 ...values, image
             })
             toast.success('Cool!! Now you can add Lessons')
-            router.push('/admin')
+            setValues({ ...values, loading: false });
+            router.push('/instructor')
         } catch (error) {
             console.log(error)
-            // setValues({ ...values, loading: false });
+            setValues({ ...values, loading: false });
             toast.error(error.response.data)
         }
     }
@@ -99,7 +96,7 @@ const CreateCourse = () => {
 
 
     return (
-        <AdminRoute>
+        <InstructorRoute>
             <div>
                 <div className={raleway.className}>
                     <div className="mt-8 xl:p-1 p-8 mb-12 flex items-center justify-center ">
@@ -129,11 +126,11 @@ const CreateCourse = () => {
                                     <div className="flex justify-center">
                                         <select
                                             value={values.paid}
-                                            onChange={v =>
-                                                setValues({ ...values, paid: !values.paid })}
+                                            onChange={(e) =>
+                                                setValues({ ...values, paid: e.target.value === 'true', price: 0 })}
                                             class="bg-gray-50 border-[2px] focus:outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#4540E1] focus:border-[#4540E1] block w-full p-2.5">
                                             <option value={true} >Paid</option>
-                                            <option value={false} selected>Free</option>
+                                            <option value={false}>Free</option>
                                         </select>
                                     </div>
                                 </div>
@@ -142,8 +139,8 @@ const CreateCourse = () => {
                                     <div className="w-full mb-2 mt-10">
                                         <div className="flex justify-center">
                                             <select
-                                                onChange={v =>
-                                                    setValues({ ...values, price: v })}
+                                                defaultValue={9.99}
+                                                onChange={(v) => setValues({ ...values, price: v })}
                                                 class="bg-gray-50 border-[2px] focus:outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#4540E1] focus:border-[#4540E1] block w-full p-2.5">
                                                 {children}
                                             </select>
@@ -152,12 +149,26 @@ const CreateCourse = () => {
                                 }
                                 <div className="w-full mb-2 mt-10">
                                     <div className="flex justify-center">
-                                        <input type="text"
-                                            placeholder="Enter Course Category"
-                                            name="category"
+                                        <select
                                             value={values.category}
-                                            onChange={handleChange}
-                                            className="p-2.5 w-full placeholder:text-gray-700 border-[2px] focus:ring-[#4540E1] focus:border-[#4540E1] rounded py-2 text-gray-700 focus:outline-none items-center" />
+                                            onChange={(event) =>
+                                                setValues((prevState) => ({
+                                                    ...prevState,
+                                                    category: event.target.value
+                                                }))
+                                            }
+                                            className="bg-gray-50 border-[2px] focus:outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#4540E1] focus:border-[#4540E1] block w-full p-2.5"
+                                        >
+                                            <option disabled value="">
+                                                Choose a category
+                                            </option>
+                                            <option value="Design & Developement">Design & Developement</option>
+                                            <option value="Marketing & Communication">Marketing & Communication</option>
+                                            <option value="Digital Marketing">Digital Marketing</option>
+                                            <option value="Business & Consulting">Business & Consulting</option>
+                                            <option value="Finance Management">Finance Management</option>
+                                            <option value="Self Development">Self Development</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div className="w-full mb-2 mt-10">
@@ -191,8 +202,10 @@ const CreateCourse = () => {
                                 <div className="flex justify-center">
                                     <button
                                         onClick={handleSubmit}
+                                        disabled={values.loading || values.uploading}
+                                        loading={values.loading}
                                         className="w-1/2  mt-6 py-2 rounded bg-[#4540e1da] hover:bg-[#4540E1] transition-all ease-in-out duration-200 text-gray-100 focus:outline-none cursor-pointer">
-                                        Save & Continue
+                                        {values.loading ? 'Saving...' : 'Save & Continue'}
                                     </button>
                                 </div>
                             </div>
@@ -200,7 +213,7 @@ const CreateCourse = () => {
                     </div>
                 </div>
             </div>
-        </AdminRoute>
+        </InstructorRoute>
     )
 }
 export default CreateCourse
