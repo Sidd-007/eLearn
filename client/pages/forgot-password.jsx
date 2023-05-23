@@ -4,7 +4,7 @@ import { Raleway } from "@next/font/google";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react"
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 
 
