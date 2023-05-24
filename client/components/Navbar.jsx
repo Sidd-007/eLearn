@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 const raleway = Raleway({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] })
 
 function Header() {
+
     const router = useRouter();
 
     const { state, dispatch } = useContext(Context)
@@ -94,6 +95,21 @@ function Header() {
                                 {user && user.role && user.role.includes("Instructor") ? (<Link href="/instructor/course/create" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
                                     <li className={router.pathname == "/instructor/course/create" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
                                         <span>Create Course</span>
+                                        <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
+                                    </li>
+                                </Link>) : null}
+
+
+                                {user && user.role && user.role.includes("Admin") ? (<Link href="/instructor" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                    <li className={router.pathname == "/instructor" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                        <span>My Courses</span>
+                                        <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
+                                    </li>
+                                </Link>) : null}
+                                
+                                {user && user.role && user.role.includes("Admin") ? (<Link href="/admin/instructors" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                    <li className={router.pathname == "/admin/instructors" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                        <span>Instructors</span>
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>
                                 </Link>) : null}
