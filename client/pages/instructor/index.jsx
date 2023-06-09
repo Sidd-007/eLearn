@@ -23,7 +23,6 @@ const Instructor = () => {
                 <div className='grid grid-cols-3 gap-4 mb-20'>
                     {courses && courses.map((course, index) => (
                         <div key={index}>
-
                             <div className='flex flex-col bg-white rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 max-w-[360px]'>
                                 <Link href={`/instructor/course/view/${course.slug}`}>
                                     <div className="max-h-140 overflow-hidden p-4">
@@ -60,9 +59,9 @@ const Instructor = () => {
                                         <div className="flex items-center text-[16px] font-semibold">Published: <MdOutlineUnpublished className="ml-2 text-[16px] text-red-400" /></div>
                                     )}
                                     <div className=" mt-2">
-                                        {course.lessons.length < 5 ? (
+                                        {course.lessons.length < 3 ? (
                                             <p>
-                                                At least 5 lessons are required to publish a course
+                                                At least 3 lessons are required to publish a course
                                             </p>
                                         ) : course.published ? (
                                             <p>Your Course is live in the marketplace</p>
@@ -70,12 +69,6 @@ const Instructor = () => {
                                             <p>Your course is ready to be published</p>
                                         )}
                                     </div>
-                                </div>
-                                <div className='p-4 inline-flex justify-between flex-wrap'>
-                                    <p className="text-md font-medium text-gray-400 mt-5">
-                                        by Mr. WebDev
-                                    </p>
-
                                 </div>
                             </div>
                         </div>

@@ -18,6 +18,7 @@ const CreateCourse = () => {
         uploading: false,
         paid: true,
         category: '',
+        tags: [],
         loading: false,
     })
 
@@ -85,6 +86,21 @@ const CreateCourse = () => {
             toast.error(error.response.data)
         }
     }
+
+    const handleTagInput = (event) => {
+        if (event.key === ' ') {
+            event.preventDefault();
+
+            const tag = event.target.value.trim();
+            if (tag) {
+                setValues((prevValues) => ({
+                    ...prevValues,
+                    tags: [...prevValues.tags, tag],
+                }));
+                event.target.value = '';
+            }
+        }
+    };
 
     const children = []
 
@@ -170,6 +186,22 @@ const CreateCourse = () => {
                                             <option value="Self Development">Self Development</option>
                                         </select>
                                     </div>
+                                </div>
+                                <div className="w-full mb-2 mt-10">
+                                    <div className="flex justify-center">
+                                        <input type="text"
+                                            placeholder="Enter Tags"
+                                            name="name"
+                                            onKeyDown={handleTagInput}
+                                            className="p-2.5 w-full placeholder:text-gray-700 border-[2px] focus:ring-[#4540E1] focus:border-[#4540E1] rounded py-2 text-gray-700 focus:outline-none items-center" />
+                                    </div>
+                                </div>
+                                <div>
+                                    {values.tags.map((tag, index) => (
+                                        <span key={index} className="tag">
+                                            {tag}
+                                        </span>
+                                    ))}
                                 </div>
                                 <div className="w-full mb-2 mt-10">
                                     <div className='flex mb-2 '>

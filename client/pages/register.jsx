@@ -27,7 +27,7 @@ const register = () => {
             router.push('/')
     }, [user])
 
-    console.log(image)
+    // console.log(image)
 
     const handleImage = (e) => {
         setImage(e.target.files[0])

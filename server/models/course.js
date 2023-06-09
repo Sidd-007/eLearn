@@ -19,7 +19,7 @@ const lessonSchema = new mongoose.Schema({
         type: {},
         minlength: 200,
     },
-    video_link: {},
+    video: {},
     fre_preview: {
         type: Boolean,
         default: false,
@@ -56,6 +56,10 @@ const courseSchema = new mongoose.Schema({
     publised: {
         type: Boolean,
         default: false,
+    },
+    tags: {
+        type: [String],
+        required: true
     },
     paid: {
         type: Boolean,

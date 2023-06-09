@@ -31,6 +31,7 @@ const userSchema = new Schema
                 default: ["Student"],
                 enum: ["Student","Instructor","Pending Verification", "Admin"],
             },
+            instructorApplication :{},
             reviews: [],
             passwordResetCode: {
                 data: String,
