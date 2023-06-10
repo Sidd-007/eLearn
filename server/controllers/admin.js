@@ -9,15 +9,18 @@ export const currentAdmin = async (req, res) => {
 
 }
 export const allInstructors = async (req, res) => {
-
     try {
-        const instructors = await User.find({ role: "Instructor" }).sort({ createdAt: -1 }).exec();
+        const instructors = await User.find({
+            $or: [{ role: 'Instructor' }, { role: 'Pending Verification' }],
+        }).sort({ createdAt: -1 }).exec();
 
         res.json(instructors);
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
     }
-}
+};
+
 
 export const instructorApplication = async (req, res) => {
     try {
@@ -47,6 +50,22 @@ export const instructorApplication = async (req, res) => {
         console.log(user)
 
         res.json({ message: 'Instructor application submitted successfully' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+export const instructorApp = async (req, res) => {
+    try {
+        const { instructorId } = req.params;
+
+        // Find the instructor's application by instructorId
+        const application = await InstructorApplication.findOne({
+            user: instructorId,
+        }).populate('user');
+
+        res.json(application);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Server error' });
