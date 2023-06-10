@@ -27,6 +27,11 @@ app.use(morgan("dev"));
 
 // app.get('/' , )
 
+export const instance = new Razorpay({
+    key_id: process.env.RAZORPAY_API_KEY,
+    key_secret: process.env.RAZORPAY_API_SECRET,
+})
+
 mongoose.connect(process.env.DATABASE).then(() => console.log("Connected to MongoDB"));
 
 readdirSync("./routes").map((r) =>
@@ -39,10 +44,6 @@ app.get('/api/csrf-token', (req, res) => {
     res.json({ csrfToken: req.csrfToken() })
 })
 
-export const instance = new Razorpay({
-    key_id: process.env.RAZORPAY_API_KEY,
-    key_secret: process.env.RAZORPAY_API_SECRET,
-})
 
 const port = process.env.PORT || 5000
 
