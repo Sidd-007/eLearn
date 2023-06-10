@@ -36,9 +36,8 @@ const SingleCourse = ({ course }) => {
 
             const { data } = await axios.post(`/api/paid-enrollment/${course._id}`);
 
-            const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
-
-            stripe.redirectToCheckout({ sessionId: data });
+            // Add Razor Pay
+            
             
         } catch (err) {
             toast("Enrollment failed, try again.");
