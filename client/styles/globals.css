@@ -3,3 +3,8 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap");
+
+input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #4540E1;
+}

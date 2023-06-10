@@ -2,8 +2,10 @@ import AWS from 'aws-sdk'
 import { nanoid } from 'nanoid'
 import slugify from 'slugify'
 import Course from '../models/course'
-
+import User from "../models/user";
 import { readFileSync } from 'fs'
+import { instance } from "../server.js";
+
 
 const awsConfig = {
     accessKeyId: process.env.ACCESS_ID,
@@ -92,7 +94,7 @@ export const createCourse = async (req, res) => {
         res.json(course);
     } catch (error) {
         console.log(error)
-        return res.status(400).send('Failed to Create Course, Try Again.')
+        // return res.status(400).send('Failed to Create Course, Try Again.')
     }
 }
 
@@ -183,15 +185,15 @@ export const addLesson = async (req, res) => {
 
         const { title, content, video } = req.body;
 
-        if (req.auth._id !== instructorId) {
-            return re.status(400).send("Unauthorized User")
-        }
+        // if (req.auth._id !== instructorId) {
+        //     return re.status(400).send("Unauthorized User")
+        // }
 
         const updated = await Course.findOneAndUpdate(
-            { slug }, 
-        {
-            $push: { lessons: { title, content, video, slug: slugify(title) } }
-        },
+            { slug },
+            {
+                $push: { lessons: { title, content, video, slug: slugify(title) } }
+            },
             { new: true }
         ).populate('instructor', "_id name").exec()
 
@@ -208,14 +210,14 @@ export const updateCourse = async (req, res) => {
 
         const { slug } = req.params;
 
-        const course  =  await Course.findOne({slug}).exec();
+        const course = await Course.findOne({ slug }).exec();
 
         // console.log(course)
         // if (req.auth._id !== course.instructor) {
         //     return res.status(400).send("Unauthorized User")
         // }
 
-        const updated = await Course.findOneAndUpdate({slug}, req.body, {
+        const updated = await Course.findOneAndUpdate({ slug }, req.body, {
             new: true,
         }).exec();
 
@@ -226,3 +228,176 @@ export const updateCourse = async (req, res) => {
         return res.status(400).send('Failed to Update Course, Try Again.')
     }
 }
+
+
+
+
+// export const updateLesson = async (req, res) => {
+//     try {
+
+
+//         const { slug, lessonId } = req.params;
+//         const { title, content, video, free_preview } = req.body;
+//         // find post
+//         const course = await Course.findOne({ slug }).exec();
+
+
+
+//         // console.log(course)
+//         // if (req.auth._id !== course.instructor) {
+//         //     return res.status(400).send("Unauthorized User")
+//         // }
+
+//         console.log(slug)
+
+//         // res.json({ ok: true });
+
+//     } catch (error) {
+//         console.log(error)
+//         return res.status(400).send('Failed to Update Course, Try Again.')
+//     }
+// }
+
+export const updateLesson = async (req, res) => {
+    try {
+        const { courseId, lessonId } = req.params;
+        const { title, content, video, free_preview } = req.body;
+        // find post
+        const courseFound = await Course.findById(courseId)
+            .select("instructor")
+            .exec();
+        // is owner?
+        // if (req.auth._id != courseFound.instructor._id) {
+        //     return res.status(400).send("Unauthorized");
+        // }
+
+        const updated = await Course.updateOne(
+            { "lessons._id": lessonId },
+            {
+                $set: {
+                    "lessons.$.title": title,
+                    "lessons.$.content": content,
+                    "lessons.$.video": video,
+                    "lessons.$.free_preview": free_preview,
+                },
+            }
+        ).exec();
+        console.log("updated => ", updated);
+        res.json({ ok: true });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).send("Update lesson failed");
+    }
+};
+
+
+export const publishCourse = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        // find post
+        const courseFound = await Course.findById(courseId)
+            .select("instructor")
+            .exec();
+        // is owner?
+        // if (req.user._id != courseFound.instructor._id) {
+        //     return res.status(400).send("Unauthorized");
+        // }
+        let course = await Course.findByIdAndUpdate(
+            courseId,
+            { published: true },
+            { new: true }
+        ).exec();
+        console.log("course published", course);
+        return;
+        res.json(course);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).send("Publish course failed");
+    }
+};
+
+export const unpublishCourse = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        // find post
+        const courseFound = await Course.findById(courseId)
+            .select("instructor")
+            .exec()
+        // is owner?
+        if (req.user._id != courseFound.instructor._id) {
+            return res.status(400).send("Unauthorized");
+        }
+
+        let course = await Course.findByIdAndUpdate(
+            courseId,
+            { published: false },
+            { new: true }
+        ).exec();
+        // console.log("course unpublished", course);
+        // return;
+        res.json(course);
+    } catch (err) {
+        console.log(err);
+        return res.status(400).send("Unpublish course failed");
+    }
+};
+
+export const courses = async (req, res) => {
+    // console.log("all courses");
+    const all = await Course.find({ published: true })
+        .limit(3)
+        // .select("-lessons")
+        .populate("instructor", "_id name")
+        .exec();
+    // console.log("============> ", all);
+    res.json(all);
+};
+
+
+export const checkEnrollment = async (req, res) => {
+    const { courseId } = req.params;
+    // find courses of the currently logged in user
+    const user = await User.findById(req.auth._id).exec();
+    // check if course id is found in user courses array
+    let ids = [];
+    let length = user.courses && user.courses.length
+    for (let i = 0; i < length; i++) {
+        ids.push(user.courses[i].toString());
+    }
+    res.json({
+        status: ids.includes(courseId),
+        course: await Course.findById(courseId).exec(),
+    });
+};
+
+
+export const freeEnrollment = async (req, res) => {
+    try {
+        // check if course is free or paid
+        const course = await Course.findById(req.params.courseId).exec();
+        if (course.paid) return;
+
+        const result = await User.findByIdAndUpdate(
+            req.auth._id,
+            {
+                $addToSet: { courses: course._id },
+            },
+            { new: true }
+        ).exec();
+        console.log(result);
+        res.json({
+            message: "Congratulations! You have successfully enrolled",
+            course,
+        });
+    } catch (err) {
+        console.log("free enrollment err", err);
+        return res.status(400).send("Enrollment create failed");
+    }
+};
+
+
+export const paidEnrollment = async (req, res) => {
+    
+};
+
+

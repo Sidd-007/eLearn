@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 import { toast } from "react-hot-toast"
 import Resizer from "react-image-file-resizer"
-
+import ReactPlayer from "react-player"
 const raleway = Raleway({ subsets: ['latin'] })
 
 const EditCourse = () => {
@@ -13,6 +13,12 @@ const EditCourse = () => {
 
     const router = useRouter()
     const { slug } = router.query;
+    const [showModal, setShowModal] = useState(false);
+    const [showLessonModal, setShowLessonModal] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [progressBar, setProgressBar] = useState(0)
+
+    const [current, setCurrent] = useState({})
 
     const [values, setValues] = useState({
         name: '',
@@ -22,6 +28,7 @@ const EditCourse = () => {
         paid: true,
         category: '',
         loading: false,
+        lessons: []
     })
 
     useEffect(() => {
@@ -30,7 +37,7 @@ const EditCourse = () => {
 
     const loadCourse = async () => {
         const { data } = await axios.get(`/api/course/${slug}`)
-        setValues(data);
+        if (data) setValues(data);
     }
 
     const [image, setImage] = useState({});
@@ -93,7 +100,7 @@ const EditCourse = () => {
             router.push('/instructor')
         } catch (error) {
             console.log(error)
-            setValues({ ...values, loading: false }); 
+            setValues({ ...values, loading: false });
             toast.error(error.response.data)
         }
     }
@@ -104,15 +111,96 @@ const EditCourse = () => {
         children.push(<option key={i.toFixed(2)}>Rs {i.toFixed(2)}</option>)
     }
 
+    const handleDrag = (e, index) => {
+        e.dataTransfer.setData("itemIndex", index);
+        // console.log("ON Drag: ", index);
+    }
+
+    const handleDrop = async (e, index) => {
+        // console.log("ON Drop: ", index);
+        const movingItemIndex = e.dataTransfer.getData("itemIndex");
+        const targetItemIndex = index;
+
+        let allLessons = values.lessons;
+
+        let movingItem = allLessons[movingItemIndex];
+        allLessons.splice(movingItemIndex, 1);
+        allLessons.splice(targetItemIndex, 0, movingItem)
+
+        setValues({ ...values, lessons: [...allLessons] })
+
+        const { data } = await axios.put(`/api/course/${slug}`, {
+            ...values, image
+        })
+        toast.success('Lesson Rearranged')
+    }
+
+    const handleDelete = async (index) => {
+        const answer = window.confirm("Are you really wanted to delete this Lesson?")
+        if (!answer) return;
+        let allLessons = values.lessons;
+        const removed = allLessons.splice(index, 1);
+
+        setValues({ ...values, lessons: allLessons });
+
+        const { data } = await axios.put(`/api/course/${slug}/${removed[0]._id}`);
+        console.log("Lessons Deleted: ", data)
+    }
+
+    // console.log(current)
+    const handleUpdateLessons = async (e) => {
+
+        // console.log("Update Lessons")
+        e.preventDefault();
+
+        const { data } = await axios.post(`/api/course/lesson/${values._id}/${current._id}`, current);
 
 
+        setShowLessonModal(false)
+
+        if (data?.ok) {
+            setValues((prevValues) => {
+                const updatedLessons = prevValues.lessons.map((lesson) => {
+                    if (lesson._id === current._id) {
+                        return current;
+                    }
+                    return lesson;
+                });
+
+                return { ...prevValues, lessons: updatedLessons };
+            });
+
+            toast.success("Lesson Updated");
+        }
+    }
+    const handleVideo = async () => {
+        if (current.video && current.video.Location) {
+            const res = await axios.post(`/api/course/remove-video/${values.instructor._id}`, current.video)
+        }
+
+        const file = e.target.files[0];
+        setUploading(true);
+
+        const videoData = new FormData();
+        videoData.append("video", file);
+        videoData.append("courseId", values._id)
+
+        const { data } = await axios.post(`/api/course/video-upload/${values.instructor._id}`, videoData, {
+            onUploadProgress: e => {
+                setProgressBar(Math.round(100 * e.loaded) / e.total)
+            }
+        })
+
+        setCurrent({ ...current, video: data });
+        setUploading(false);
+    }
 
     return (
         <InstructorRoute>
             <div>
                 {values && (
                     <div className={raleway.className}>
-                        <div className="mt-8 xl:p-1 p-8 mb-12 flex items-center justify-center ">
+                        <div className="mt-8 xl:p-1 p-8 mb-12 flex flex-col items-center justify-center ">
                             <form onSubmit={handleSubmit} className="xl:w-1/3 w-11/12   shadow-2xl  rounded-lg items-center">
                                 <h2 className="xl:text-4xl text-3xl  text-center text-gray-700  mb-4 mt-10 font-semibold">Edit Course!</h2>
                                 <div className="px-12 pb-10">
@@ -216,6 +304,142 @@ const EditCourse = () => {
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                        <div className="mt-8 mx-[510px]">
+                            <span className="text-xl font-medium">
+                                {values && values.lessons && values.lessons.length} Lessons
+                            </span>
+                            <div className="mt-4">
+                                {values && values.lessons && values.lessons.map((lesson, index) => (
+                                    <div onClick={() => setCurrent(lesson)} className=" flex justify-between items-center  bg-white shadow-md p-4 mt-2 mb-8" onDragOver={(e) => e.preventDefault()}
+                                        key={index}>
+                                        <div draggable onDragStart={(e) => handleDrag(e, index)} onClick={() => setShowLessonModal(true)} onDrop={(e) => handleDrop(e, index)} className="flex items-center cursor-pointer" >
+                                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14.5455 0H1.45455C0.654545 0 0 0.672 0 1.49333V10.4533C0 11.2747 0.654545 11.9467 1.45455 11.9467H5.09091V12.6933C5.09091 13.104 5.41818 13.44 5.81818 13.44H10.1818C10.5818 13.44 10.9091 13.104 10.9091 12.6933V11.9467H14.5455C15.3455 11.9467 15.9927 11.2747 15.9927 10.4533L16 1.49333C16 0.672 15.3455 0 14.5455 0ZM13.8182 10.4533H2.18182C1.78182 10.4533 1.45455 10.1173 1.45455 9.70667V2.24C1.45455 1.82933 1.78182 1.49333 2.18182 1.49333H13.8182C14.2182 1.49333 14.5455 1.82933 14.5455 2.24V9.70667C14.5455 10.1173 14.2182 10.4533 13.8182 10.4533Z" fill="black" />
+                                                <path d="M9.86476 5.4871C9.97801 5.54431 10.0727 5.62972 10.1388 5.73417C10.2049 5.83862 10.2398 5.95818 10.2398 6.08003C10.2398 6.20188 10.2049 6.32144 10.1388 6.42589C10.0727 6.53034 9.97801 6.61574 9.86476 6.67295L6.84373 8.23356C6.35728 8.48489 5.75977 8.15785 5.75977 7.64086V4.51942C5.75977 4.00199 6.35728 3.67517 6.84373 3.92627L9.86476 5.4871Z" fill="black" />
+                                            </svg>
+                                            <span className="ml-3 font-semibold" >{lesson.title}</span>
+                                        </div>
+                                        <div className="" onClick={() => handleDelete(index)}>
+                                            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M3 18C2.45 18 1.979 17.804 1.587 17.412C1.195 17.02 0.999333 16.5493 1 16V3H0V1H5V0H11V1H16V3H15V16C15 16.55 14.804 17.021 14.412 17.413C14.02 17.805 13.5493 18.0007 13 18H3ZM5 14H7V5H5V14ZM9 14H11V5H9V14Z" fill="#FF5858" />
+                                            </svg>
+                                        </div>
+                                        {showLessonModal ? (
+                                            <div>
+                                                <>
+                                                    <div
+                                                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                                    >
+                                                        <div className="relative 2xl:mt-0 mt-36 2xl:mb-0 md:mt-36 mb-8 mx-auto 2xl:w-[600px] md:w-[600px] w-[300px]">
+                                                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                                                <div className="flex items-start justify-between py-2 px-6 mt-2 border-b border-solid border-slate-200 rounded-t">
+                                                                    <h3 className="md:text-lg  text-lg 2xl:text-xl font-semibold">
+                                                                        Add Lessons
+                                                                    </h3>
+                                                                    <button
+                                                                        className="bg-red-500 rounded-md text-white background-transparent font-bold uppercase px-2 py-1 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                        type="button"
+                                                                        onClick={() => setShowLessonModal(false)}
+                                                                    >
+                                                                        Close
+                                                                    </button>
+                                                                </div>
+                                                                <div className="relative p-6  flex items-center justify-center flex-col">
+                                                                    {/* <pre>{JSON.stringify(current, null, 4)}</pre> */}
+                                                                    <form onSubmit={handleUpdateLessons}>
+                                                                        <div>
+                                                                            <span>Title:</span>
+                                                                            <div className="w-full mb-2 mt-2">
+                                                                                <div className="flex justify-center">
+                                                                                    <input
+                                                                                        name="title"
+                                                                                        type="text"
+                                                                                        onChange={(e) => setCurrent((prevCurrent) => ({ ...prevCurrent, title: e.target.value }))}
+                                                                                        value={current.title}
+                                                                                        placeholder="Title"
+                                                                                        className="px-8 w-full rounded py-2 text-gray-700 placeholder:text-gray-700 border-[2px] focus:ring-[#4540E1] focus:border-[#4540E1] focus:outline-none" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <textarea
+                                                                                name="description"
+                                                                                rows="4"
+                                                                                onChange={(e) => setCurrent({ ...current, content: e.target.value })}
+                                                                                value={current.content}
+                                                                                class="resize-none mt-2 block p-2.5 w-full text-sm bg-gray-50 placeholder:text-gray-700 border-[2px] focus:ring-[#4540E1] focus:border-[#4540E1] rounded py-2 text-gray-700 focus:outline-none" placeholder="Content..."
+                                                                            />
+                                                                        </div>
+                                                                        <div className="w-full mb-2 mt-4">
+                                                                            <div className="flex items-center  justify-around">
+                                                                                <input
+                                                                                    class="relative m-0 block w-1/2 min-w-0 flex-auto rounded border border-solid border-neutral-300  bg-clip-padding py-[0.32rem] px-3 text-base font-normal text-neutral-700  transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100  file:px-3 file:py-[0.32rem] file:text-neutral-700  file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:bg-[#4540e129] focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none"
+                                                                                    type="file" accept="video/*" hidden onChange={handleVideo}
+                                                                                />
+                                                                            </div>
+                                                                            <div className='h-1 w-full bg-gray-300'>
+                                                                                <div
+                                                                                    style={{ width: `${progressBar}%` }}
+                                                                                    className={`h-full ${progressBar < 70 ? 'bg-red-600' : 'bg-green-600'}`}>
+                                                                                </div>
+                                                                            </div>
+                                                                            {!uploading && current.video && current.video.Location && (
+                                                                                <div className="mt-2 flex justify-center items-center">
+                                                                                    <ReactPlayer
+                                                                                        url={current.video.Location}
+                                                                                        width='310px'
+                                                                                        height='140px'
+                                                                                        controls
+                                                                                    />
+
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                        <div className="flex items-center justify-between mt-8">
+                                                                            <span>
+                                                                                Preview
+                                                                            </span>
+                                                                            <label
+                                                                                class="flex items-center cursor-pointer"
+                                                                            >
+                                                                                <div class="relative">
+                                                                                    <label class="relative inline-flex items-center cursor-pointer">
+                                                                                        <input type="checkbox" className="float-right mt-2"
+                                                                                            disabled={uploading}
+                                                                                            checked={current.free_preview}
+                                                                                            // onChange={(v) => setFree_preview(v)}
+                                                                                            name="free_preview"
+                                                                                            onChange={(v) => setCurrent({ ...current, fre_preview: v })} />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div className="flex items-center justify-center mt-8">
+                                                                            <button
+                                                                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                                type="submit"
+                                                                            >
+                                                                                {uploading ? <Loader /> : "Add"}
+                                                                            </button>
+
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                                </>
+                                            </div>
+
+                                        ) : null}
+
+                                    </div>
+                                ))}
+
+
+                            </div>
                         </div>
                     </div>
                 )}

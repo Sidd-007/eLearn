@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+const { ObjectId } = mongoose.Schema
 const { Schema } = mongoose;
 
 const userSchema = new Schema
@@ -37,6 +37,12 @@ const userSchema = new Schema
                 data: String,
                 default:  "",
             },
+            courses: [
+                {
+                    type: ObjectId,
+                    ref: "Course"
+                }
+            ],
 
         },
 

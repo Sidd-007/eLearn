@@ -38,7 +38,7 @@ const Instructor = () => {
                                     </div>
                                     {course.paid ? (<div className=''>
                                         <span className='ml-2 mt-4 text-white font-semibold bg-red-200 p-2 border-2 rounded-xl border-[#ff00001f]'>
-                                            {course.price}
+                                            Rs {course.price}
                                         </span>
                                     </div>) : (<div className=''>
                                         <span className='ml-2 mt-4  font-semibold bg-green-200 p-2 border-2 rounded-xl text-green-800 border-[#00ff371f]'>
