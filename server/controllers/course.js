@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk'
+import User from "../models/user";
 import { nanoid } from 'nanoid'
 import slugify from 'slugify'
 import Course from '../models/course'
-import User from "../models/user";
 import { readFileSync } from 'fs'
 import { instance } from "../server.js";
 

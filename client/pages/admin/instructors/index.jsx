@@ -53,11 +53,11 @@ const Instructors = () => {
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                                        <tbody class="bg-white divide-y divide-gray-200">
                                             {Array.isArray(instructors) && instructors.length > 0 ? (
                                                 instructors.map((instructor, index) => (
                                                     <tr key={instructor._id}>
-                                                        <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                                                        <td class="px-4 py-4 text-sm font-medium text-gray-700whitespace-nowrap">
                                                             <div class="inline-flex items-center gap-x-3">
                                                                 <span>{index + 1}</span>
                                                             </div>

@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Raleway } from '@next/font/google'
 import { toast } from "react-hot-toast";
+import { Context } from "@/context";
+import { useRouter } from "next/router";
 const raleway = Raleway({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] })
 
 const BecomeInstructor = () => {
+
+    const { state: { user } } = useContext(Context)
+
     const [formData, setFormData] = useState({
         questions: ["", "", "", "", ""],
         resume: "" // Initialize the resume field as an empty string
     });
 
+
+    const router = useRouter();
+    
     const handleChange = (e, index) => {
 
         const updatedQuestions = [...formData.questions];
@@ -32,11 +40,11 @@ const BecomeInstructor = () => {
             console.log(formData);
 
             // setLoading(true);
-            const { data } = await axios.post(`/api/admin/instructor-application`, {
+            const { data } = await axios.post(`/api/admin/instructor-application/${user._id}`, {
                 formData,
             });
             router.push("/");
-            toast.success("Hurray!!");
+            toast.success("Hurray!! You have Successfully Applied for Instructor Position");
             // setLoading(false);
         } catch (error) {
             toast.error(error.message); // Pass the error message instead of the error object

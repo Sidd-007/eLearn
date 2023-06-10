@@ -1,4 +1,6 @@
+
 import User from "../models/user";
+
 import Course from "../models/course";
 // import stripe from "stripe"
 import queryString from 'query-string'
