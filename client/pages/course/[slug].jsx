@@ -8,8 +8,6 @@ import { toast } from "react-hot-toast";
 import me from '../../assets/logo.jpg';
 
 
-import me from '../../assets/logo.jpg';
-
 const raleway = Raleway({ subsets: ['latin'] })
 
 const SingleCourse = ({ course }) => {

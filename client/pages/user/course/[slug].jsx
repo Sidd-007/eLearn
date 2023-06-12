@@ -7,7 +7,7 @@ import ReactPlayer from "react-player";
 const UserCourse = () => {
 
     const [loading, setLoading] = useState(false);
-    const [showVideoLessonModal, setShowVideoLessonModal] = useState(false);
+    const [showReviewModal, setShowReviewModal] = useState(false);
     const [course, setCourse] = useState({});
     const [activeLesson, setActiveLesson] = useState(null);
     const [initialLoad, setInitialLoad] = useState(true);
