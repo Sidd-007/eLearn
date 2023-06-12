@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-const { ObjectId } = mongoose.Schema;
 const { Schema } = mongoose;
 
 export const instructorApplicationSchema = new Schema(
     {
         user: {
-            type: ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },

@@ -1,23 +1,20 @@
 
 import Category from '@/components/Category'
 import Reviews from '@/components/Reviews'
-import { Raleway, Poppins } from '@next/font/google'
 import axios from 'axios'
 import Link from 'next/link'
 
-const raleway = Raleway({ subsets: ['latin'] })
-const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] })
 
 export default function Home({ courses }) {
 
 
     console.log(courses)
     return (
-        <div className={poppins.className}>
+        <div className="font-poppins">
             <section className='mb-40'>
                 <div className="bg-[#F6F5EE]">
                     <div className="container flex flex-col items-center px-4 py-16 pb-24 mx-auto text-center lg:pb-56  md:px-10 lg:px-32 dark:text-gray-900">
-                        <h1 className="text-5xl font-bold leading-none sm:text-6xl xl:max-w-3xl dark:text-gray-900">Learn <span className='text-[#4540E1]'>Easily</span>  anywhere and anytime</h1>
+                        <h1 className="text-5xl  font-bold leading-none sm:text-6xl xl:max-w-3xl dark:text-gray-900">Learn <span className='text-[#4540E1]'>Easily</span>  anywhere and anytime</h1>
                         <p className="mt-6 mb-8 text-lg sm:mb-12 xl:max-w-3xl dark:text-gray-900">Provides you with the latest online learning system and material
                             that help your knowledge growing.</p>
                         <div className="flex flex-wrap justify-center">

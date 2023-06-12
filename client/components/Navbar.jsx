@@ -53,7 +53,7 @@ function Header() {
     }
 
     return (
-        <div className={raleway.className}>
+        <div className="font-raleway">
             <header className="relative w-full z-30 shadow-md shadow-[#4540e129]">
                 <div className="max-w-full xl:mx-24 px-4 sm:px-6">
                     <div className="flex  items-center justify-between h-20">

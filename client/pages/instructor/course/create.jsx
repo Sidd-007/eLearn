@@ -2,7 +2,7 @@ import InstructorRoute from "@/components/routes/InstructorRoute"
 import { Raleway } from '@next/font/google'
 import axios from "axios"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { toast } from "react-hot-toast"
 import Resizer from "react-image-file-resizer"
 
@@ -24,6 +24,7 @@ const CreateCourse = () => {
 
     const [image, setImage] = useState({});
     const [preview, setPreview] = useState('')
+
 
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value })
@@ -88,7 +89,7 @@ const CreateCourse = () => {
     }
 
     const handleTagInput = (event) => {
-        if (event.key === ' ') {
+        if (event.key === 'Enter') {
             event.preventDefault();
 
             const tag = event.target.value.trim();
@@ -170,18 +171,18 @@ const CreateCourse = () => {
                                                 }
                                                 class="bg-gray-50 border-[2px] focus:outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#4540E1] focus:border-[#4540E1] block w-full p-2.5">
                                                 <option disabled value="">
-                                                Choose a Price
-                                            </option>
-                                            <option value="9.99">Rs 9.99</option>
-                                            <option value="19.99">Rs 19.99</option>
-                                            <option value="29.99">Rs 29.99</option>
-                                            <option value="39.99">Rs 39.99</option>
-                                            <option value="49.99">Rs 49.99</option>
-                                            <option value="59.99">Rs 59.99</option>
-                                            <option value="69.99">Rs 69.99</option>
-                                            <option value="79.99">Rs 79.99</option>
-                                            <option value="89.99">Rs 89.99</option>
-                                            <option value="99.99">Rs 99.99</option>
+                                                    Choose a Price
+                                                </option>
+                                                <option value="9.99">Rs 9.99</option>
+                                                <option value="19.99">Rs 19.99</option>
+                                                <option value="29.99">Rs 29.99</option>
+                                                <option value="39.99">Rs 39.99</option>
+                                                <option value="49.99">Rs 49.99</option>
+                                                <option value="59.99">Rs 59.99</option>
+                                                <option value="69.99">Rs 69.99</option>
+                                                <option value="79.99">Rs 79.99</option>
+                                                <option value="89.99">Rs 89.99</option>
+                                                <option value="99.99">Rs 99.99</option>
                                             </select>
                                         </div>
                                     </div>
@@ -211,7 +212,7 @@ const CreateCourse = () => {
                                     </div>
                                 </div>
                                 <div className="w-full mb-2 mt-10">
-                                    <span className="mb-2 text-sm text-gray-400 italic">write a tag then press "space bar"</span>
+                                    <span className="mb-2 text-sm text-gray-400 italic">write a tag then press "enter"</span>
                                     <div className="flex justify-center">
                                         <input type="text"
                                             placeholder="Enter Tags"

@@ -3,8 +3,10 @@ import User from "../models/user";
 import { nanoid } from 'nanoid'
 import slugify from 'slugify'
 import Course from '../models/course'
+import Payment from '../models/payment'
 import { readFileSync } from 'fs'
 import { instance } from "../server.js";
+import crypto from 'crypto';
 
 
 const awsConfig = {
@@ -344,11 +346,7 @@ export const unpublishCourse = async (req, res) => {
 
 export const courses = async (req, res) => {
     // console.log("all courses");
-    const all = await Course.find({ published: true })
-        .limit(3)
-        // .select("-lessons")
-        .populate("instructor", "_id name")
-        .exec();
+    const all = await Course.find({ published: true }).populate("instructor", "_id name").exec();
     // console.log("============> ", all);
     res.json(all);
 };
@@ -397,7 +395,71 @@ export const freeEnrollment = async (req, res) => {
 
 
 export const paidEnrollment = async (req, res) => {
-    
+    const course = await Course.findById(req.params.courseId).exec();
+
+    const totalAmount = course.price;
+
+    const options = {
+        amount: Number(totalAmount) * 100,
+        currency: "INR"
+    }
+
+    const order = await instance.orders.create(options);
+
+    return res.status(201).json({
+        order,
+        course,
+    });
+};
+
+export const paymentVerification = async (req, res) => {
+
+    const courseId = req.params.courseId;
+
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, course, userId } = req.body;
+
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_API_SECRET).update(body).digest("hex");
+
+    if (expectedSignature === razorpay_signature) {
+
+        const payment = await Payment.create({
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+            courseId,
+            userId
+        });
+
+        const result = await User.findByIdAndUpdate(
+            req.auth._id,
+            {
+                $addToSet: { courses: course._id },
+            },
+            { new: true }
+        ).exec();
+        console.log(result);
+
+        res.status(201).json({
+            message: `Congratulations! You have successfully enrolled. Payment ID: ${payment._id}`,
+        });
+    }
+    else {
+        res.status(400).json({ error: "Payment Verification Failed!" });
+    }
 };
 
 
+export const userCourses = async (req, res) => {
+    try {
+        const user = await User.findById(req.auth._id).exec();
+    
+        const courses = await Course.find({ _id: { $in: user.courses } }).populate("instructor", "_id name").exec()
+    
+        res.json(courses)
+    } catch (error) {
+        console.log("free enrollment err", err);
+        return res.status(400).send("Failed to get user enrolled courses");
+    }
+}

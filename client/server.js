@@ -10,7 +10,7 @@ const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
     const server = express();
-
+    
     if (dev) {
         server.use(
             "/api",

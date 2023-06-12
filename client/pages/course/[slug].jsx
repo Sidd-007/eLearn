@@ -5,8 +5,11 @@ import ReactPlayer from "react-player";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/context";
 import { toast } from "react-hot-toast";
+import me from '../../assets/logo.jpg';
+
 
 const raleway = Raleway({ subsets: ['latin'] })
+
 const SingleCourse = ({ course }) => {
     const [enrolled, setEnrolled] = useState({});
     const [loading, setLoading] = useState(false);
@@ -37,7 +40,49 @@ const SingleCourse = ({ course }) => {
             const { data } = await axios.post(`/api/paid-enrollment/${course._id}`);
 
             // Add Razor Pay
-            
+            const options = {
+                key: "rzp_test_rLKxPM53xHIh3e",
+                amount: data.course.price,
+                currency: "INR",
+                name: "eLearn",
+                description: "E-Learning Marketplace",
+                image: me,
+                order_id: data.order.id,
+
+
+                handler: async (response) => {
+
+                    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = response;
+
+                    try {
+
+                        const { data: enrollmentData } = await axios.post(`/api/paid-enrollment/verify/${course._id}`, {
+                            course: data.course,
+                            userId: user._id,
+                            razorpay_order_id,
+                            razorpay_payment_id,
+                            razorpay_signature
+                        });
+
+                        console.log(enrollmentData);  // Handle the enrollment verification response
+
+                    } catch (error) {
+                        console.error(error);
+                    }
+
+                },
+
+
+                theme: {
+                    color: "#4540E1",
+                }
+            };
+
+            const razorpay = new window.Razorpay(options);
+            razorpay.open();
+
+
+            setLoading(false);
             
         } catch (err) {
             toast("Enrollment failed, try again.");

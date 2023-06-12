@@ -150,7 +150,7 @@ const CourseView = () => {
                     <div className="flex">
                         <div className="flex flex-col items-center">
                             <div className="w-[480px] h-32  ">
-                                <img src={course.image?.Location} className='shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 bg-white rounded-xl' />
+                                <img src={course.image?.Location} className='shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-[480px]  object-cover p-4 bg-white rounded-xl' />
                             </div>
                             <div className="flex mt-48 items-center cursor-pointer" >
                                 <div onClick={() => router.push(`/instructor/course/edit/${slug}`)} className="bg-red-400 flex p-2 justify-center items-center rounded-lg">
