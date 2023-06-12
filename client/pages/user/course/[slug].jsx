@@ -51,7 +51,7 @@ const UserCourse = () => {
     useEffect(() => {
         localStorage.setItem('activeLessonId', activeLesson);
     }, [activeLesson]);
-    
+
 
     console.log(course)
     return (
@@ -139,6 +139,10 @@ const UserCourse = () => {
                                         ) : null
                                     )}
                             </div>
+                        </div>
+                    </div>
+                    <div className="flex justify-center items-center mt-20 mb-20">
+                        <div className="inline-flex items-center cursor-pointer  border-2 border-gray-900 font-semibold rounded-full py-2 px-5 hover:bg-[#4540E1] hover:text-gray-50 transition-all ease-in-out duration-100 focus:outline-none   text-base mt-4 md:mt-0">Feeback Form
                         </div>
                     </div>
                 </div>
