@@ -21,7 +21,7 @@ const SES = new AWS.SES(awsConfig);
 export const register = async (req, res) => {
     try {
         const { name, email, password, imageUrl } = req.body;
-        console.table({name, email, password, imageUrl})
+        console.table({ name, email, password, imageUrl })
 
         if (!name) return res.status(400).send("Name is required")
 
@@ -110,8 +110,8 @@ export const sendTestEmail = async (req, res) => {
     }
     let transporter = nodemailer.createTransport(config);
     let message = {
-        from: 'iamsiddhantmeshram@gmail.com', 
-        to:'iamsiddhantmeshram@gmail.com', 
+        from: 'iamsiddhantmeshram@gmail.com',
+        to: 'iamsiddhantmeshram@gmail.com',
         subject: "Password Reset Code",
         html: `
             <html>
@@ -146,14 +146,54 @@ export const forgotPassword = async (req, res) => {
         }
         let transporter = nodemailer.createTransport(config);
         let message = {
-            from: 'iamsiddhantmeshram@gmail.com', // sender address
+            from: 'elearn.org.com@gmail.com', // sender address
             to: email, // list of receivers
             subject: "Password Reset Code",
             html: `
-                <html>
-                <h1>Reset Password Link</h1>
-                <p>Use this code to reset your password: ${shortCode}</p>
-                </html>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                    }
+                    
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
+                    
+                    h1 {
+                        color: #333;
+                        font-size: 24px;
+                        margin-bottom: 20px;
+                    }
+                    
+                    p {
+                        color: #555;
+                        font-size: 16px;
+                        line-height: 1.5;
+                    }
+                    
+                    .code {
+                        font-size: 20px;
+                        font-weight: bold;
+                        background-color: #f5f5f5;
+                        padding: 10px;
+                        margin-top: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>Reset Password Link</h1>
+                    <p>Use this code to reset your password:</p>
+                    <div class="code">${shortCode}</div>
+                </div>
+            </body>
+            </html>
+            
                 
                 `// html body
         }
