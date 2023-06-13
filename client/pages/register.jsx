@@ -3,6 +3,7 @@ import Loader from '@/components/Loader'
 import { Context } from '@/context'
 import { Raleway } from '@next/font/google'
 import axios from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { Cookies } from 'react-cookie'
@@ -134,11 +135,11 @@ const register = () => {
                         </div>
                         <div className="flex justify-center  mt-10">
                             <label className="mr-2 text-gray-800" >Already have an account? </label>
-                            <span
-                                className=" text-[#1EC28B] font-semibold transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
+                            <Link href="/login"
+                                className=" text-[#1EC28B] cursor-pointer font-semibold transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
                             >
                                 Sign In
-                            </span>
+                            </Link>
                         </div>
 
                     </div>

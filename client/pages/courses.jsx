@@ -19,28 +19,28 @@ const Courses = ({ courses }) => {
                     </span>
                 </Link>
             )}
-            <div className='grid grid-cols-3 gap-10 mb-20 mt-10'>
+            <div className='grid grid-cols-3 gap-28 mb-20 mt-10'>
                 {courses && courses.map((course, index) => (
                     <div key={index}>
                         <div className='flex flex-col bg-white rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 max-w-[360px]'>
-                            <Link href={`/instructor/course/view/${course.slug}`}>
+                            <Link href={`/course/${course.slug}`}>
                                 <div className="max-h-140 overflow-hidden p-4">
                                     <img className="w-full h-auto rounded-lg" src={course.image?.Location} alt="" />
                                 </div>
 
                             </Link>
                             <div className='px-4 flex justify-between items-center'>
-                                <div className='p-2 max-w-fit rounded-lg border-2 text-sm px-4 cursor-pointer transition-all text-[#4540E1]  ease-in-out duration-200 border-[#4540e11f] bg-[#ECEEF9]'>
+                                <div className='py-1 max-w-fit rounded-lg border-2 text-sm px-2 cursor-pointer transition-all text-[#4540E1]  ease-in-out duration-200 border-[#4540e11f] bg-[#ECEEF9]'>
                                     <span className=' font-medium '>
                                         {course.category}
                                     </span>
                                 </div>
                                 {course.paid ? (<div className=''>
-                                    <span className='ml-2 mt-4 text-white font-semibold bg-red-200 p-2 border-2 rounded-xl border-[#ff00001f]'>
+                                    <span className='ml-2 mt-4 text-white font-semibold bg-red-200 px-2 py-1 border-2 rounded-xl border-[#ff00001f]'>
                                         Rs {course.price}
                                     </span>
                                 </div>) : (<div className=''>
-                                    <span className='ml-2 mt-4  font-semibold bg-green-200 p-2 border-2 rounded-xl text-green-800 border-[#00ff371f]'>
+                                    <span className='ml-2 mt-4  font-semibold bg-green-200 px-2 py-1 border-2 rounded-xl text-green-800 border-[#00ff371f]'>
                                         Free
                                     </span>
                                 </div>)}

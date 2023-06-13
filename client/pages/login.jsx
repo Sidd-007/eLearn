@@ -86,14 +86,14 @@ const login = () => {
                         </div>
                         <div className="flex justify-center mt-10">
                             <label className="mr-2 text-gray-800" >Doesn't have an account? </label>
-                            <span
-                                className=" text-[#1EC28B] font-semibold  transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
+                            <Link href="/register"
+                                className=" text-[#1EC28B] cursor-pointer font-semibold  transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
                             >
                                 Sign Up
-                            </span>
+                            </Link>
                         </div>
                         <div className="flex justify-center mt-10">
-                            <Link href="/forgot-password" className="cursor:pointer font-semibold text-red-700  transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105" >Frogot Password? </Link>
+                            <Link href="/forgot-password" className="cursor:pointer font-semibold text-red-700  transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105" >Forgot Password? </Link>
                         </div>
 
                     </div>

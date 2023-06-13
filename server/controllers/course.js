@@ -454,9 +454,9 @@ export const paymentVerification = async (req, res) => {
 export const userCourses = async (req, res) => {
     try {
         // check if course is free or paid
-        const user  = await User.findById(req.auth._id).exec();
+        const user = await User.findById(req.auth._id).exec();
 
-        const courses = await Course.find({_id: { $in: user.courses } }).populate("instructor", "_id name").exec();
+        const courses = await Course.find({ _id: { $in: user.courses } }).populate("instructor", "_id name").exec();
 
         res.json(courses);
     } catch (err) {
@@ -464,4 +464,73 @@ export const userCourses = async (req, res) => {
         return res.status(400).send("EFailed to get user courses");
     }
 }
+export const reviewCourse = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const { title, courseFeedback, instructorFeedback, rating } = req.body;
+
+        // Find the user by userId
+        const user = await User.findById(req.auth._id).exec();
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
+        // Find the course by slug
+        const course = await Course.findOne({ slug });
+        if (!course) {
+            return res.status(404).send("Course not found");
+        }
+
+        // Create a review object
+        const userReview = {
+            course: course._id,
+            title,
+            rating,
+            courseFeedback: courseFeedback,
+            instructorFeedback: instructorFeedback,
+        };
+        const courseReview = {
+            user: req.auth._id,
+            title,
+            rating,
+            courseFeedback: courseFeedback,
+            instructorFeedback: instructorFeedback,
+        };
+
+        // Update the reviews array for the user
+        user.reviews.push(userReview);
+        await user.save();
+
+        // Update the reviews array for the course
+        course.reviews.push(courseReview);
+        await course.save();
+
+        // Return the updated user and course
+        res.json({ user, course });
+    } catch (err) {
+        console.log("Failed to update reviews", err);
+        return res.status(400).send("Failed to update reviews");
+    }
+};
+
+export const reviewCheck = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const user = await User.findById(req.auth._id).exec();
+        const course = await Course.findOne({ slug });
+
+
+        const reviewExists = user.reviews.some((review) =>
+            review.course.equals(course._id)
+        );
+
+        // Return the result
+        res.json({ hasPostedReview: reviewExists });
+    } catch (err) {
+        console.log("Failed to update reviews", err);
+        return res.status(400).send("Failed to update reviews");
+    }
+};
+
+
 

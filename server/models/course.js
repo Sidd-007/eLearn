@@ -70,6 +70,28 @@ const courseSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
+    reviews: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        rating: {
+            type: Number,
+            required: true,
+        },
+        courseFeedback: {
+            type: String,
+            required: true,
+        },
+        instructorFeedback: {
+            type: String,
+            required: true,
+        },
+    }],
     lessons: [lessonSchema],
 
 }, { timestamps: true })

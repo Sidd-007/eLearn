@@ -29,13 +29,12 @@ const userSchema = new Schema
             role: {
                 type: [String],
                 default: ["Student"],
-                enum: ["Student","Instructor","Pending Verification", "Admin"],
+                enum: ["Student", "Instructor", "Pending Verification", "Admin"],
             },
-            instructorApplication :{},
-            reviews: [],
+            instructorApplication: {},
             passwordResetCode: {
                 data: String,
-                default:  "",
+                default: "",
             },
             courses: [
                 {
@@ -43,7 +42,30 @@ const userSchema = new Schema
                     ref: "Course"
                 }
             ],
-
+            reviews: [
+                {
+                    course: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Course',
+                    },
+                    title: {
+                        type: String,
+                        required: true,
+                    },
+                    rating: {
+                        type: Number,
+                        required: true,
+                    },
+                    courseFeedback: {
+                        type: String,
+                        required: true,
+                    },
+                    instructorFeedback: {
+                        type: String,
+                        required: true,
+                    },
+                },
+            ],
         },
 
         { timestamps: true }
