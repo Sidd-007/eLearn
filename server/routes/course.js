@@ -2,12 +2,13 @@ import express from 'express'
 
 import formidable from 'express-formidable'
 
-import { uploadImage, removeImage, createCourse, getSingleCourse, uploadVideo, removeVideo, addLesson,updateLesson,updateCourse, publishCourse, unpublishCourse, courses, checkEnrollment, freeEnrollment, paidEnrollment, paymentVerification, userCourses, reviewCourse, reviewCheck } from '../controllers/course';
+import { uploadImage, removeImage, createCourse, getSingleCourse, uploadVideo, removeVideo, addLesson,updateLesson,updateCourse, publishCourse, unpublishCourse, courses, checkEnrollment, freeEnrollment, paidEnrollment, paymentVerification, userCourses, reviewCourse, reviewCheck, reviews } from '../controllers/course';
 import { isInstructor, requireSignin,  } from '../middlewares';
 
 const router = express.Router();
 
 router.get("/courses", courses);
+router.get("/reviews", reviews);
 
 router.post("/course/upload-image" , uploadImage)
 router.post("/course/remove-image" , removeImage)

@@ -395,61 +395,68 @@ export const freeEnrollment = async (req, res) => {
 
 export const paidEnrollment = async (req, res) => {
 
+    try {
+        const course = await Course.findById(req.params.courseId).exec();
 
-    const course = await Course.findById(req.params.courseId).exec();
+        const totalAmount = course.price;
 
-    const totalAmount = course.price;
+        const options = {
+            amount: Number(totalAmount) * 100,
+            currency: "INR"
+        }
 
-    const options = {
-        amount: Number(totalAmount) * 100,
-        currency: "INR"
+        const order = await instance.orders.create(options);
+
+        return res.status(201).json({
+            order,
+            course,
+        });
+    } catch (error) {
+        console.log(error)
     }
-
-    const order = await instance.orders.create(options);
-
-    return res.status(201).json({
-        order,
-        course,
-    });
 };
 
 export const paymentVerification = async (req, res) => {
 
-    const courseId = req.params.courseId;
+    try {
+        const courseId = req.params.courseId;
 
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, course, userId } = req.body;
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, course, userId } = req.body;
 
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
+        const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-    const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_API_SECRET).update(body).digest("hex");
+        const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_API_SECRET).update(body).digest("hex");
 
-    if (expectedSignature === razorpay_signature) {
+        if (expectedSignature === razorpay_signature) {
 
-        const payment = await Payment.create({
-            razorpay_order_id,
-            razorpay_payment_id,
-            razorpay_signature,
-            courseId,
-            userId
-        });
+            const payment = await Payment.create({
+                razorpay_order_id,
+                razorpay_payment_id,
+                razorpay_signature,
+                courseId,
+                userId
+            });
 
-        const result = await User.findByIdAndUpdate(
-            req.auth._id,
-            {
-                $addToSet: { courses: course._id },
-            },
-            { new: true }
-        ).exec();
-        console.log(result);
+            const result = await User.findByIdAndUpdate(
+                req.auth._id,
+                {
+                    $addToSet: { courses: course._id },
+                },
+                { new: true }
+            ).exec();
+            console.log(result);
 
-        res.status(201).json({
-            message: `Congratulations! You have successfully enrolled. Payment ID: ${payment._id}`,
-        });
+            res.status(201).json({
+                message: `Congratulations! You have successfully enrolled. Payment ID: ${payment._id}`,
+            });
+        }
+        else {
+            res.status(400).json({ error: "Payment Verification Failed!" });
+        }
+    } catch (error) {
+        console.log(error)
     }
-    else {
-        res.status(400).json({ error: "Payment Verification Failed!" });
-    }
-}
+};
 
 export const userCourses = async (req, res) => {
     try {
@@ -533,4 +540,27 @@ export const reviewCheck = async (req, res) => {
 };
 
 
+export const reviews = async (req, res) => {
+    try {
 
+        const allCourses = await Course.find({ published: true }).exec();
+
+        let allReviews = [];
+
+        for (const course of allCourses) {
+            for (const review of course.reviews) {
+                const user = await User.findById(review.user).exec();
+                const reviewWithUser = {
+                    ...review._doc,
+                    user: user // Replace "user" field with the user object
+                };
+                allReviews.push(reviewWithUser);
+            }
+        }
+
+        res.status(200).json(allReviews);
+
+    } catch (error) {
+        console.log("Failed to fetch reviews", error);
+    }
+}

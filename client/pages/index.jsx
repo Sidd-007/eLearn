@@ -62,7 +62,7 @@ export default function Home({ courses }) {
                         </Link>
                     </div>
                     <div className='grid grid-cols-3 gap-4 mb-20'>
-                        {courses.map((course) => (
+                        {courses.slice(0, 6).map((course) => (
                             <div className='flex flex-col bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200'>
                                 <div key={course._id}>
                                     <Link href={`/course/${course.slug}`}>

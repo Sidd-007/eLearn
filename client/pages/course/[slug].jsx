@@ -83,7 +83,6 @@ const SingleCourse = ({ course }) => {
 
 
             setLoading(false);
-            
         } catch (err) {
             toast("Enrollment failed, try again.");
             console.log(err);
