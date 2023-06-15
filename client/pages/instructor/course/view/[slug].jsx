@@ -61,8 +61,6 @@ const CourseView = () => {
             toast.error("Lesson Adding Failed")
         }
 
-
-
         // console.log(values);
     }
 
@@ -105,18 +103,15 @@ const CourseView = () => {
     }
 
     const handlePublish = async () => {
-        // console.log(course.instructor._id);
-        // return;
         try {
             let answer = window.confirm(
                 "Once you publish your course, it will be live in the marketplace for students to enroll."
             );
             if (!answer) return;
             const { data } = await axios.put(`/api/course/publish/${course._id}`);
-            // console.log("COURSE PUBLISHED RES", data);
             toast.success("Congrats. Your course is now live in marketplace!");
-            setCourse(data);
             router.push('/instructor')
+            setCourse(data);
         } catch (error) {
             console.log(error)
             toast.error("Course publish failed. Try again");
@@ -124,8 +119,6 @@ const CourseView = () => {
     };
 
     const handleUnpublish = async () => {
-        // console.log(slug);
-        // return;
         try {
             let answer = window.confirm(
                 "Once you unpublish your course, it will not appear in the marketplace for students to enroll."
@@ -133,6 +126,7 @@ const CourseView = () => {
             if (!answer) return;
             const { data } = await axios.put(`/api/course/unpublish/${course._id}`);
             toast.success("Your course is now removed from the marketplace!");
+            router.push('/instructor')
             setCourse(data);
         } catch (error) {
             console.log(error)
@@ -140,8 +134,6 @@ const CourseView = () => {
         }
     };
 
-
-    // console.log(course)
     return (
         <div className={raleway.className}>
             {course && course ? (
@@ -167,7 +159,6 @@ const CourseView = () => {
                                             </span>
                                             <MdOutlineUnpublished onClick={handleUnpublish} title="Publish" className="text-[18px] ml-2 cursor-pointer text-white" />
                                         </div>
-
                                     ) : (
                                         <div className="bg-green-400 flex p-2 justify-center items-center rounded-lg ml-16 cursor-pointer">
                                             <span className="text-white font-semibold">

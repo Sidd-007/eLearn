@@ -300,17 +300,15 @@ export const publishCourse = async (req, res) => {
         const courseFound = await Course.findById(courseId)
             .select("instructor")
             .exec();
-        // is owner?
-        // if (req.user._id != courseFound.instructor._id) {
-        //     return res.status(400).send("Unauthorized");
-        // }
+
+        if (req.auth._id != courseFound.instructor._id) {
+            return res.status(400).send("Unauthorized");
+        }
         let course = await Course.findByIdAndUpdate(
             courseId,
             { published: true },
             { new: true }
         ).exec();
-        console.log("course published", course);
-        return;
         res.json(course);
     } catch (err) {
         console.log(err);
@@ -325,8 +323,7 @@ export const unpublishCourse = async (req, res) => {
         const courseFound = await Course.findById(courseId)
             .select("instructor")
             .exec()
-        // is owner?
-        if (req.user._id != courseFound.instructor._id) {
+        if (req.auth._id != courseFound.instructor._id) {
             return res.status(400).send("Unauthorized");
         }
 
@@ -335,8 +332,6 @@ export const unpublishCourse = async (req, res) => {
             { published: false },
             { new: true }
         ).exec();
-        // console.log("course unpublished", course);
-        // return;
         res.json(course);
     } catch (err) {
         console.log(err);
