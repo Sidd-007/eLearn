@@ -559,3 +559,18 @@ export const reviews = async (req, res) => {
         console.log("Failed to fetch reviews", error);
     }
 }
+
+export const categoryCourses = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        console.log(slug);
+
+        // const allCourses = await Course.find({ category: slug }).exec();
+
+        // console.log(allCourses);
+        // res.status(200).json({ courses: allCourses });
+
+    } catch (error) {
+        console.log("Failed to fetch Category Courses", error);
+    }
+}

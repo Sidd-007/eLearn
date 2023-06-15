@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const Category = () => {
     return (
         <div>
@@ -21,9 +23,9 @@ const Category = () => {
                             </svg>
                         </div>
                         <div className='ml-4 flex flex-col justify-between'>
-                            <span className='font-bold'>
+                            <Link href="/category/Design & Developement" className='font-bold'>
                                 Design & <br /> Developement
-                            </span>
+                            </Link>
                             <span className='text-[#AFAFAF]'>
                                 25+ courses available
                             </span>
@@ -39,9 +41,9 @@ const Category = () => {
                             </svg>
                         </div>
                         <div className='ml-4 flex flex-col justify-between'>
-                            <span className='font-bold'>
+                            <Link href="/category/Marketing & Communication" className='font-bold'>
                                 Marketing & <br /> Communication
-                            </span>
+                            </Link>
                             <span className='text-[#AFAFAF]'>
                                 30+ courses available
                             </span>
@@ -56,9 +58,9 @@ const Category = () => {
                             </svg>
                         </div>
                         <div className='ml-4 flex flex-col justify-between'>
-                            <span className='font-bold'>
+                            <Link href="/category/Digital Marketing" className='font-bold'>
                                 Digital <br /> Marketing
-                            </span>
+                            </Link>
                             <span className='text-[#AFAFAF]'>
                                 30+ courses available
                             </span>
@@ -78,9 +80,9 @@ const Category = () => {
 
                         </div>
                         <div className='ml-4 flex flex-col justify-between'>
-                            <span className='font-bold'>
+                            <Link href="/category/Business & Consulting" className='font-bold'>
                                 Business & <br /> Consulting
-                            </span>
+                            </Link>
                             <span className='text-[#AFAFAF]'>
                                 25+ courses available
                             </span>
@@ -96,9 +98,9 @@ const Category = () => {
 
                         </div>
                         <div className='ml-4 flex flex-col justify-between'>
-                            <span className='font-bold'>
+                            <Link href="/category/Finance Management" className='font-bold'>
                                 Finance  <br /> Management
-                            </span>
+                            </Link>
                             <span className='text-[#AFAFAF]'>
                                 30+ courses available
                             </span>
@@ -114,9 +116,9 @@ const Category = () => {
                             </svg>
                         </div>
                         <div className='ml-4 flex flex-col justify-between'>
-                            <span className='font-bold'>
+                            <Link href="/category/Self Developement" className='font-bold'>
                                 Self <br /> Development
-                            </span>
+                            </Link>
                             <span className='text-[#AFAFAF]'>
                                 30+ courses available
                             </span>

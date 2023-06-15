@@ -6,7 +6,7 @@ import { useContext } from "react"
 const Courses = ({ courses }) => {
 
     const { state: { user } } = useContext(Context)
-    console.log(courses);
+    // console.log(courses);
     return (
         <div className="flex flex-col justify-center items-center mt-14">
             {(user && user.role && user.role.includes("Admin")) || (user && user.role && user.role.includes("Instructor")) || (user && user.role && user.role.includes("Pending Verification")) ? (null) : (
