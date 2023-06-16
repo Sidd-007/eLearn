@@ -17,6 +17,7 @@ const CourseView = () => {
     const [showVideoModal, setShowVideoModal] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [progressBar, setProgressBar] = useState(0)
+    const [studentCount, setStudentCount] = useState(0)
 
 
     const [course, setCourse] = useState({});
@@ -34,11 +35,22 @@ const CourseView = () => {
     useEffect(() => {
         loadCourse();
     }, [slug])
+    useEffect(() => {
+       course && loadStudentCount();
+    }, [course])
 
     const loadCourse = async () => {
         const { data } = await axios.get(`/api/course/${slug}`)
 
         setCourse(data);
+    }
+
+    const loadStudentCount = async () => {
+        const { data } = await axios.get(`/api/instructor/student-count`, {
+            courseId: course._id
+        })
+
+        setStudentCount(data.length);
     }
 
     const handleAddLessons = async (e) => {
@@ -191,6 +203,14 @@ const CourseView = () => {
                                     </span>
                                 </div>
                             </div>
+                            <div className="mt-6 flex">
+                                <div><strong className="text-lg">Enrolled Students:-</strong>
+                                    <span className="ml-2">
+                                        {studentCount}
+                                    </span>
+                                </div>
+                            </div>
+
                             <div className="2xl:mt-6  mt-8 2xl:mb-0 mb-8">
                                 <button onClick={() => setShowModal(true)} class="rounded px-5 py-2.5 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
                                     <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>

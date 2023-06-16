@@ -14,6 +14,9 @@ const UserCourse = () => {
     const [activeLesson, setActiveLesson] = useState(null);
     const [initialLoad, setInitialLoad] = useState(true);
     const [checkReview, setCheckReview] = useState(false);
+    const [updateState, setUpdateState] = useState(false);
+
+    const [completedLessons, setCompletedLessons] = useState([])
 
     const [reviewForm, setReviewForm] = useState({
         title: '',
@@ -33,6 +36,10 @@ const UserCourse = () => {
     useEffect(() => {
         if (slug) loadCourse();
     }, [slug])
+
+    useEffect(() => {
+        if (course) loadCompletedLessons();
+    }, [course])
 
     const loadCourse = async () => {
         try {
@@ -62,7 +69,7 @@ const UserCourse = () => {
                 setCheckReview(true);
             } else {
                 const response = await axios.post(`/api/course-review/${slug}`, reviewForm);
-                
+
                 setShowReviewModal(false)
                 toast("Hurray!! You have Successfully Submitted Review for this Course")
                 setReviewForm({
@@ -78,6 +85,50 @@ const UserCourse = () => {
             console.log(error);
         }
     };
+
+    const markedComplete = async (lessonId) => {
+        try {
+            const { data } = await axios.post(`/api/marked-completed`, {
+                courseId: course._id,
+                lessonId: lessonId,
+            })
+
+            setCompletedLessons([...completedLessons, lessonId])
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const markedInComplete = async (lessonId) => {
+        try {
+            const { data } = await axios.post(`/api/marked-incompleted`, {
+                courseId: course._id,
+                lessonId: lessonId,
+            })
+            const all = completedLessons;
+            const index = all.indexOf(lessonId);
+
+            if (index > -1) {
+                all.splice(index, 1);
+                setCompletedLessons(all);
+                setUpdateState(!updateState)
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const loadCompletedLessons = async (lessonId) => {
+        try {
+            const { data } = await axios.post(`/api/list-completed`, {
+                courseId: course._id,
+            })
+            setCompletedLessons(data)
+            console.log("Marked as Completed", data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     useEffect(() => {
@@ -141,20 +192,33 @@ const UserCourse = () => {
                             {course && course.lessons && course.lessons.length} Lessons
                         </span>
                         <div className="mt-4 flex justify-between mb-32">
-                            <div className="bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-md  w-fit flex flex-col justify-between p-4">
+                            <div className="bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-md  w-1/6 flex flex-col justify-between ">
 
                                 {course && course.lessons && course.lessons.map((lesson, index) => (
-                                    <div
-                                        className={`flex justify-center  items-center bg-white shadow-md p-2 mt-2 mb-8`}
-                                        key={lesson._id}
-                                    >
-                                        <button
-                                            onClick={() => handleLessonClick(lesson._id)}
-                                            className={`${activeLesson === lesson._id ? 'bg-blue-100' : ''
-                                                }`}
+                                    <div className="flex justify-center items-center">
+
+                                        <div
+                                            className={`flex justify-center  items-center whitespace-nowrap w-fit bg-white shadow-md p-2 mt-2 mb-8`}
+                                            key={lesson._id}
                                         >
-                                            {lesson.title}
-                                        </button>
+                                            <button
+                                                onClick={() => handleLessonClick(lesson._id)}
+                                                className={`${activeLesson === lesson._id ? 'bg-blue-100 ' : ''
+                                                    }`}
+                                            >
+                                                {lesson.title}
+                                            </button>
+                                            <div className="ml-2">
+                                                {completedLessons && completedLessons.includes(lesson._id) ? (
+
+                                                    <svg width="16" height="16" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM12 19.59L7.00001 14.59L8.59001 13L12 16.41L19.41 9L21.006 10.586L12 19.59Z" fill="#3FFF5E" />
+                                                    </svg>) : (<svg width="16" height="16" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M17.125 2.925C13.225 -0.975 6.825 -0.975 2.925 2.925C-0.975 6.825 -0.975 13.225 2.925 17.125C6.825 21.025 13.125 21.025 17.025 17.125C20.925 13.225 21.025 6.825 17.125 2.925ZM12.825 14.225L10.025 11.425L7.225 14.225L5.825 12.825L8.625 10.025L5.825 7.225L7.225 5.825L10.025 8.625L12.825 5.825L14.225 7.225L11.425 10.025L14.225 12.825L12.825 14.225Z" fill="#FF4242" />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -163,8 +227,9 @@ const UserCourse = () => {
                                     course.lessons &&
                                     course.lessons.map((lesson) =>
                                         lesson._id === activeLesson ? (
-                                            <div key={lesson._id}>
-                                                <div className="flex justify-center items-center text-xl">
+                                            <div key={lesson._id} className="flex flex-col justify-center items-center">
+
+                                                <div className="flex justify-center items-center ">
                                                     <span>
                                                         {lesson.content}
                                                     </span>
@@ -174,11 +239,19 @@ const UserCourse = () => {
                                                         <ReactPlayer
                                                             url={lesson.video?.Location}
                                                             className="w-full"
-                                                            loop
+                                                            onEnded={() => markedComplete(lesson._id)}
                                                             controls
                                                         />
                                                     </div>
                                                 </div>) : (null)}
+                                                {completedLessons.includes(lesson._id) ? (<button onClick={() => markedInComplete(lesson._id)} class="rounded px-5 mt-8 py-2.5 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
+                                                    <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                                                    <span class="relative">Marked as Incomplete</span>
+                                                </button>) : (<button onClick={() => markedComplete(lesson._id)} class="rounded px-5 mt-8 py-2.5 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
+                                                    <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                                                    <span class="relative">Marked as Complete</span>
+                                                </button>)}
+
                                             </div>
                                         ) : null
                                     )}

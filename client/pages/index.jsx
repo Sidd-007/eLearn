@@ -55,19 +55,19 @@ export default function Home({ courses }) {
                                 Get the best course with the best prices with world-class tutors.
                             </span>
                         </div>
-                        <Link href="/courses" className='p-4 font-medium flex justify-center items-center  max-w-fit text-lg rounded-lg border-2 px-6 cursor-pointer transition-all text-[#4540E1] hover:text-white ease-in-out duration-200 border-[#4540e11f] hover:bg-[#4540E1]'>
+                        <Link href="/courses" className=' font-medium flex justify-center items-center  w-fit text-lg rounded-lg border-2 px-5 cursor-pointer transition-all text-[#4540E1] hover:text-white ease-in-out duration-200 border-[#4540e11f] hover:bg-[#4540E1]'>
                             <span className=''>
                                 See All
                             </span>
                         </Link>
                     </div>
-                    <div className='grid grid-cols-3 gap-4 mb-20'>
+                    <div className='grid grid-cols-3 gap-4 mb-20 auto-rows-auto'>
                         {courses.slice(0, 6).map((course) => (
-                            <div className='flex flex-col bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200'>
+                            <div className='flex flex-col bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 h-full'>
                                 <div key={course._id}>
                                     <Link href={`/course/${course.slug}`}>
-                                        <div className="max-h-140 overflow-hidden p-4">
-                                            <img className="w-full h-auto rounded-lg" src={course.image?.Location} alt="" />
+                                        <div className="h-64 w-full overflow-hidden p-4">
+                                            <img className="w-full h-full rounded-lg" src={course.image?.Location} alt="" />
                                         </div>
 
                                     </Link>
@@ -78,11 +78,11 @@ export default function Home({ courses }) {
                                             </span>
                                         </div>
                                         {course.paid ? (<div className=''>
-                                            <span className='ml-2 mt-4 text-white font-semibold bg-red-200 p-2 border-2 rounded-xl border-[#ff00001f]'>
+                                            <span className='ml-2 mt-4 text-red-500 font-semibold bg-red-200 p-2 border-2 rounded-xl border-[#ff00001f]'>
                                                 Rs {course.price}
                                             </span>
                                         </div>) : (<div className=''>
-                                            <span className='ml-2 mt-4  font-semibold bg-green-200 p-2 border-2 rounded-xl text-green-800 border-[#00ff371f]'>
+                                            <span className='ml-2 mt-4  font-semibold bg-green-200 p-2 border-2 rounded-xl text-green-500 border-[#00ff371f]'>
                                                 Free
                                             </span>
                                         </div>)}
@@ -93,8 +93,8 @@ export default function Home({ courses }) {
                                     <div className="p-4">
                                         Instructor: {course.instructor.name}
                                     </div>
-                                    <div className="p-4 flex justify-between ">
-                                        <h1 className="text-lg font-semibold text-gray-700 flex "><span> Lessons</span> : {course.lessons.length} </h1>
+                                    <div className="p-4 flex justify-between mb-auto">
+                                        <h1 className="text-lg font-semibold text-gray-700 flex ">{course.lessons.length} <span className="ml-2"> Lessons</span></h1>
                                     </div>
                                     <div className="p-4 flex -ml-2">
                                         {course && course.tags && course.tags.map((tag, index) => (

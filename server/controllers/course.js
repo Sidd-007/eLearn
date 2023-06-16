@@ -7,6 +7,7 @@ import Payment from '../models/payment'
 import { readFileSync } from 'fs'
 import { instance } from "../server.js";
 import crypto from 'crypto';
+import CompletedLessons from '../models/completedLessons'
 
 
 const awsConfig = {
@@ -560,17 +561,68 @@ export const reviews = async (req, res) => {
     }
 }
 
-export const categoryCourses = async (req, res) => {
+export const markedCompleted = async (req, res) => {
     try {
-        const { slug } = req.params;
-        console.log(slug);
+        const { courseId, lessonId } = req.body;
+        // console.log({ courseId, lessonId });
 
-        // const allCourses = await Course.find({ category: slug }).exec();
+        const existing = await CompletedLessons.findOne({
+            user: req.auth._id,
+            course: courseId,
+        }).exec();
 
-        // console.log(allCourses);
-        // res.status(200).json({ courses: allCourses });
+        if (existing) {
+            const updated = await CompletedLessons.findOneAndUpdate({
+                user: req.auth._id,
+                course: courseId,
+            }, {
+                $addToSet: { lessons: lessonId }
+            }).exec();
+
+            res.json({ ok: true })
+        } else {
+            const created = await new CompletedLessons({
+                user: req.auth._id,
+                course: courseId,
+                lessons: lessonId,
+            }).save();
+
+            res.json({ ok: true })
+        }
+
+
 
     } catch (error) {
         console.log("Failed to fetch Category Courses", error);
+    }
+}
+
+
+export const listCompleted = async (req, res) => {
+    try {
+
+        const list = await CompletedLessons.findOne({ user: req.auth._id, course: req.body.courseId }).exec()
+
+
+        list && res.json(list.lessons)
+    } catch (error) {
+        console.log("Failed to fetch Completed Lesson", error);
+    }
+}
+export const markedInCompleted = async (req, res) => {
+    try {
+
+        const { courseId, lessonId } = req.body;
+
+        const updated = await CompletedLessons.findOneAndUpdate({
+            user: req.auth._id,
+            course: courseId,
+        }, {
+            $pull: { lessons: lessonId }
+        }).exec();
+
+        res.json({ ok: true })
+    } catch (error) {
+        console.log("Failed to fetch Completed Lesson", error);
     }
 }

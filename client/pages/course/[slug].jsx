@@ -117,10 +117,10 @@ const SingleCourse = ({ course }) => {
                     {/* {user.name} */}
                     <div className="flex">
                         <div className="flex flex-col items-center">
-                            <div className="w-[480px] h-32  ">
-                                <img src={course.image?.Location} className='shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 bg-white rounded-xl' />
+                            <div className="w-[480px]  ">
+                                <img src={course.image?.Location} className=' shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 bg-white rounded-xl' />
                             </div>
-                            <div className="flex mt-48 items-center cursor-pointer" >
+                            <div className="flex mt-10 items-center cursor-pointer" >
                                 <button onClick={course.paid ? handlePaidEnrollment : handleFreeEnrollment} class="rounded px-5 py-2.5 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
                                     <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
                                     <span class="relative font-semibold">{user ? enrolled.status ? "Go to course" : "Enroll" : "Login To Enroll"}</span>
