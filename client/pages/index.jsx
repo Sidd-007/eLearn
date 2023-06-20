@@ -9,6 +9,17 @@ export default function Home({ courses }) {
 
 
     console.log(courses)
+    function calculateAverageRating(reviews) {
+        if (reviews.length === 0) {
+            return "No rating";
+        }
+
+        const sumOfRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
+        const averageRating = sumOfRatings / reviews.length;
+        const roundedAverageRating = averageRating.toFixed(1);
+
+        return roundedAverageRating;
+    }
     return (
         <div className="font-poppins">
             <section className='mb-40'>
@@ -96,6 +107,9 @@ export default function Home({ courses }) {
                                     <div className="p-4 flex justify-between mb-auto">
                                         <h1 className="text-lg font-semibold text-gray-700 flex ">{course.lessons.length} <span className="ml-2"> Lessons</span></h1>
                                     </div>
+                                    <div className="p-4 flex">
+                                        Rating: {calculateAverageRating(course.reviews)}
+                                    </div>
                                     <div className="p-4 flex -ml-2">
                                         {course && course.tags && course.tags.map((tag, index) => (
                                             <div className="flex bg-gray-200 text-sm  ml-2 p-1 rounded-md text-[#4540E1] items-center" key={index}>
@@ -104,6 +118,7 @@ export default function Home({ courses }) {
                                         ))}
                                     </div>
 
+                                    {/* Average Rating */}
                                 </div>
 
                             </div>

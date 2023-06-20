@@ -555,7 +555,6 @@ export const reviews = async (req, res) => {
         }
 
         res.status(200).json(allReviews);
-
     } catch (error) {
         console.log("Failed to fetch reviews", error);
     }
@@ -626,3 +625,29 @@ export const markedInCompleted = async (req, res) => {
         console.log("Failed to fetch Completed Lesson", error);
     }
 }
+export const courseCategoryCount = async (req, res) => {
+    try {
+
+        const allCourses = await Course.find({ published: true }).exec();
+
+        const categoryCounts = {
+            'Design & Development': 0,
+            'Marketing & Communication': 0,
+            'Digital Marketing': 0,
+            'Business & Consulting': 0,
+            'Finance Management': 0,
+            'Self Development': 0
+        };
+
+        allCourses.forEach(course => {
+            categoryCounts[course.category]++;
+        });
+
+        res.json(categoryCounts);
+
+    } catch (error) {
+        console.log("Failed to fetch Completed Lesson", error);
+    }
+}
+
+

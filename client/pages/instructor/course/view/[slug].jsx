@@ -18,6 +18,7 @@ const CourseView = () => {
     const [uploading, setUploading] = useState(false);
     const [progressBar, setProgressBar] = useState(0)
     const [studentCount, setStudentCount] = useState(0)
+    const [studentReviews, setStudentReviews] = useState([]);
 
 
     const [course, setCourse] = useState({});
@@ -35,15 +36,19 @@ const CourseView = () => {
     useEffect(() => {
         loadCourse();
     }, [slug])
+
     useEffect(() => {
-       course && loadStudentCount();
+        course && loadStudentCount();
     }, [course])
+
+
 
     const loadCourse = async () => {
         const { data } = await axios.get(`/api/course/${slug}`)
 
         setCourse(data);
     }
+
 
     const loadStudentCount = async () => {
         const { data } = await axios.get(`/api/instructor/student-count`, {
@@ -57,11 +62,8 @@ const CourseView = () => {
         e.preventDefault();
 
         try {
-
             setUploading(true);
             const { data } = await axios.post(`/api/course/lesson/${slug}/${course.instructor._id}`, values)
-            // console.log(data);
-
             setValues({ ...values, title: "", content: "", video: {} });
             setUploading(false);
             setCourse(data)
@@ -72,8 +74,6 @@ const CourseView = () => {
             console.log(error)
             toast.error("Lesson Adding Failed")
         }
-
-        // console.log(values);
     }
 
     const handleVideo = async (e) => {
@@ -87,8 +87,6 @@ const CourseView = () => {
                     setProgressBar(Math.round(100 * e.loaded) / e.total)
                 }
             })
-            // console.log(data);
-
             setValues({ ...values, video: data });
             setUploading(false);
         } catch (error) {
@@ -100,9 +98,7 @@ const CourseView = () => {
     const handleVideoRemove = async () => {
         try {
             setUploading(true)
-            // console.log(values.video)
             const { data } = await axios.post(`/api/course/remove-video/${course.instructor._id}`, values.video)
-
             console.log(data);
             setValues({ ...values, video: {} })
             setProgressBar(0)
@@ -146,11 +142,12 @@ const CourseView = () => {
         }
     };
 
+    console.log(studentReviews)
+
     return (
-        <div className={raleway.className}>
+        <div className="font-poppins mb-20">
             {course && course ? (
                 <div className="max-w-full mx-24 px-4 sm:px-6 mt-10">
-                    {/* {user.name} */}
                     <div className="flex">
                         <div className="flex flex-col items-center">
                             <div className="w-[480px] h-32  ">
@@ -379,6 +376,43 @@ const CourseView = () => {
                 </div>
             ) : <></>
             }
+            <div className="max-w-full mx-24 px-4 sm:px-6 mt-10">
+                <span className="text-xl font-medium">
+                    Student Reviews
+                </span>
+                <div className='grid grid-cols-4 gap-4 mb-20 mt-8 w-full'>
+                    {course && course.reviews && course.reviews.map((review) => (
+                        <div className='flex flex-col border-2 border-purple-500 min-w-fit   bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200' key={review._id}>
+                            <div className=" overflow-hidden p-4 text-lg font-semibold">
+                                {review.title}
+                            </div>
+                            <div className="p-4 my-auto pb-12  flex  ">
+                                <span className="text-sm font-medium text-gray-700">{review.courseFeedback}</span>
+                            </div>
+                            <div className="p-4 flex">
+                                <div className='flex items-center'>
+                                    <span>
+                                        Rating:
+                                    </span>
+                                    <div className="ml-2 flex">
+                                        {[...Array(review.rating)].map((_, index) => (
+                                            <svg width="9" height="9" viewBox="0 0 9 9" className={index > 0 ? 'ml-1 mt-1' : 'mt-1'} fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M8.74028 3.06518L5.96864 2.66243L4.72914 0.150921C4.67949 0.0503672 4.58291 0 4.48633 0L4.48669 7.22472L6.96533 8.52795C7.16409 8.6323 7.39607 8.46369 7.35816 8.24254L6.88482 5.48191L8.8903 3.52697C9.05115 3.37028 8.96233 3.0975 8.74028 3.06518Z" fill="#FFB820" />
+                                                <path d="M6.30258 5.29289C6.30258 5.29289 6.73007 7.78472 6.73151 7.79302C6.73151 7.79302 4.52095 7.23339 4.48647 7.22472L2.0071 8.52795C1.80834 8.6323 1.57636 8.46368 1.61427 8.24254L2.08761 5.48191L0.0821319 3.52697C-0.0787184 3.37027 0.0101013 3.0975 0.23215 3.06518L3.00379 2.66242L4.2433 0.150921C4.29294 0.0503673 4.38952 0 4.48611 0L5.60881 3.15743L8.11923 3.52228L6.30258 5.29289Z" fill="#FFD06A" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+
+                            </div>
+
+
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div >
     )
 }

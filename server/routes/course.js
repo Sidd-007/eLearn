@@ -2,7 +2,7 @@ import express from 'express'
 
 import formidable from 'express-formidable'
 
-import { uploadImage, removeImage, createCourse, getSingleCourse, uploadVideo, removeVideo, addLesson,updateLesson,updateCourse, publishCourse, unpublishCourse, courses, checkEnrollment, freeEnrollment, paidEnrollment, paymentVerification, userCourses, reviewCourse, reviewCheck, reviews,  markedCompleted, listCompleted, markedInCompleted } from '../controllers/course';
+import { uploadImage, removeImage, createCourse, getSingleCourse, uploadVideo, removeVideo, addLesson,updateLesson,updateCourse, publishCourse, unpublishCourse, courses, checkEnrollment, freeEnrollment, paidEnrollment, paymentVerification, userCourses, reviewCourse, reviewCheck, reviews,  markedCompleted, listCompleted, markedInCompleted, courseCategoryCount } from '../controllers/course';
 import { isInstructor, requireSignin,  } from '../middlewares';
 
 const router = express.Router();
@@ -41,4 +41,5 @@ router.get('/course-review-check/:slug', requireSignin, reviewCheck)
 router.post("/marked-completed", requireSignin, markedCompleted)
 router.post("/marked-incompleted", requireSignin, markedInCompleted)
 router.post("/list-completed", requireSignin, listCompleted)
+router.post("/course-category-count", requireSignin, courseCategoryCount)
 module.exports = router;

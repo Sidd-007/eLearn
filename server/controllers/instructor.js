@@ -41,33 +41,34 @@ export const currentInstructor = async (req, res) => {
 
         let user = await User.findById(req.auth._id).select("-password").exec();
 
-        if(!user.role.includes("Instructor")) {
+        if (!user.role.includes("Instructor")) {
             return res.sendStatus(403);
         } else {
-            res.json({ ok : true });
+            res.json({ ok: true });
         }
-        
+
     } catch (error) {
         console.log(error)
     }
 }
 
-export const instructorCourses = async (req,res) => {
+export const instructorCourses = async (req, res) => {
     try {
-        const courses = await Course.find({instructor: req.auth._id}).sort({createdAt: -1}).exec();
+        const courses = await Course.find({ instructor: req.auth._id }).sort({ createdAt: -1 }).exec();
 
         res.json(courses);
-        
+
     } catch (error) {
         console.log(error)
     }
 }
-export const studentCount = async (req,res) => {
+
+export const studentCount = async (req, res) => {
     try {
-        const users = await User.find({courses : req.body.courseId}).select('_id').exec();
+        const users = await User.find({ courses: req.body.courseId }).select('_id').exec();
 
         res.json(users);
-        
+
     } catch (error) {
         console.log(error)
     }
