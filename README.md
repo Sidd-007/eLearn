@@ -24,4 +24,32 @@ All commands are run from the root of the project, from a terminal:
   - Run client at `localhost:3000` using `npm run dev`.
   - Run server at `localhost:5000` using `npm start`.
 
+## Environment Variables 
+  - For server (.env)
+    ```
+    PORT = 5000
+    DATABASE = "Insert Mongodb URL here. Local or Atlas"
+    
+    JWT_SECRET = asdjbscg8
+    
+    ACCESS_ID= Insert Access ID of IAM user of AWS account
+    SECRET_KEY= Insert Secret Key of IAM user of AWS account
+    AWS_REGION= Insert region of AWS account
+    AWS_API_VERSION = 2010-12-01
+    
+    EMAIL_FROM = Insert email id from which you wants to send emails
+    EMAIL = Email Id
+    PASS = Email Id Pass
+    
+    RAZORPAY_API_KEY = "Insert Razorpay Api Key"
+    RAZORPAY_API_SECRET = "Insert Razorpay Api Secret"
+    
+    ```
+  - For client (.env.local)
+    ```
+    NEXT_PUBLIC_API='http://localhost:5000/api'
+    API = http://localhost:5000/api
+    
+    ```
+
   
