@@ -26,6 +26,7 @@ All commands are run from the root of the project, from a terminal:
 
 ## Environment Variables 
   - For server (.env)
+    
     ```
     PORT = 5000
     DATABASE = "Insert Mongodb URL here. Local or Atlas"
@@ -46,6 +47,7 @@ All commands are run from the root of the project, from a terminal:
     
     ```
   - For client (.env.local)
+    
     ```
     NEXT_PUBLIC_API='http://localhost:5000/api'
     API = http://localhost:5000/api
