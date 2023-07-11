@@ -21,7 +21,7 @@ All commands are run from the root of the project, from a terminal:
   - Clone the repository `git clone https://github.com/Sidd-007/eLearn.git`.
   - Install Dependencies in server's folder `cd server` and `npm i`.
   - Install Dependencies in client's folder `cd client` and `npm i`.
-  - Run client at `localhost:3000` `npm run dev`.
-  - Run server at `localhost:5000` `npm start`.
+  - Run client at `localhost:3000` using `npm run dev`.
+  - Run server at `localhost:5000` using `npm start`.
 
   
