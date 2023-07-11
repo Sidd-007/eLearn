@@ -31,22 +31,22 @@ const Profile = () => {
                 <div className="font-poppins mb-20">
                     {user &&
                         (
-                            <div className="max-w-full mb-20 mx-24 px-4 mt-10 sm:px-6">
+                            <div className="max-w-8xl mb-20 xl:mx-24 mx-3 px-4 mt-10 sm:px-6">
                                 {/* {user.name} */}
-                                <div className="flex ">
+                                <div className="flex xl:flex-row md:flex-col flex-col">
                                     <div className="flex flex-col mb-20 items-center">
-                                        <div className="w-[480px] h-32  ">
+                                        <div className="xl:w-[480px] md:w-[480px] w-[300px] h-32  ">
                                             <img src={user.picture} className='shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 bg-white rounded-xl' />
                                         </div>
                                     </div>
-                                    <div className="mx-16">
+                                    <div className="xl:mx-16 md:mx-10 xl:mt-0 md:mt-28 mt-8">
                                         <div>
                                             <span className="text-5xl">{user.name}</span>
                                         </div>
                                         <div className="mt-3">
                                             <span>Email: {user.email}</span>
                                         </div>
-                                        {user && user.role.includes("Student") ? (
+                                        {user ? (
                                             <div>
                                                 <div className="mt-6 text-lg font-semibold">
                                                     <span>Enrolled Courses: </span>
@@ -62,7 +62,7 @@ const Profile = () => {
                                                                             {course.name}
                                                                         </span>
                                                                     </div>
-                                                                    <div className="flex justify-between mt-4">
+                                                                    <div className="flex items-center justify-between mt-4">
                                                                         <div className="flex flex-col">
                                                                             <span>
                                                                                 {course.lessons.length} Lessons

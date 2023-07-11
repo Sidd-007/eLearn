@@ -84,10 +84,10 @@ const login = () => {
                                 type="submit" className="w-1/2  mt-6 py-2 rounded bg-[#4540e1da] hover:bg-[#4540E1] transition-all ease-in-out duration-200 text-gray-100 focus:outline-none cursor-pointer" disabled={!email || !password || loading}> {loading ? <Loader /> : "Login"}
                             </button>
                         </div>
-                        <div className="flex justify-center mt-10">
-                            <label className="mr-2 text-gray-800" >Doesn't have an account? </label>
+                        <div className="flex flex-col xl:flex-row md:flex-row items-center justify-center mt-10">
+                            <label className="mr-2 text-sm xl:text-lg md:text-lg text-gray-800" >Doesn't have an account? </label>
                             <Link href="/register"
-                                className=" text-[#1EC28B] cursor-pointer font-semibold  transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
+                                className=" text-[#1EC28B] text-sm xl:text-lg md:text-lg cursor-pointer font-semibold  transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
                             >
                                 Sign Up
                             </Link>

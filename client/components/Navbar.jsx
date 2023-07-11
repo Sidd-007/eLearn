@@ -91,7 +91,7 @@ function Header() {
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>
                                 </Link>)}
-                                
+
                                 {user && user.role && user.role.includes("Instructor") ? (<Link href="/instructor/course/create" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
                                     <li className={router.pathname == "/instructor/course/create" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
                                         <span>Create Course</span>
@@ -106,14 +106,14 @@ function Header() {
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>
                                 </Link>) : null}
-                                
+
                                 {user && user.role && user.role.includes("Admin") ? (<Link href="/admin/instructors" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
                                     <li className={router.pathname == "/admin/instructors" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
                                         <span>Instructors</span>
                                         <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
                                     </li>
                                 </Link>) : null}
-                                
+
 
                                 {/* 1st level: hover */}
 
@@ -173,6 +173,39 @@ function Header() {
                                     )}
                                     {user !== null && (
                                         <>
+                                            {user && user.role && user.role.includes("Instructor") ? (<Link href="/instructor" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                                <li onClick={() => setMobileNavOpen(!mobileNavOpen)} className={router.pathname == "/instructor" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                                    <span>My Courses</span>
+                                                    <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
+                                                </li>
+                                            </Link>) : (<Link href="/courses" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                                <li onClick={() => setMobileNavOpen(!mobileNavOpen)} className={router.pathname == "/courses" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                                    <span>Courses</span>
+                                                    <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
+                                                </li>
+                                            </Link>)}
+
+                                            {user && user.role && user.role.includes("Instructor") ? (<Link href="/instructor/course/create" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                                <li onClick={() => setMobileNavOpen(!mobileNavOpen)} className={router.pathname == "/instructor/course/create" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                                    <span>Create Course</span>
+                                                    <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
+                                                </li>
+                                            </Link>) : null}
+
+
+                                            {user && user.role && user.role.includes("Admin") ? (<Link href="/instructor" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                                <li onClick={() => setMobileNavOpen(!mobileNavOpen)} className={router.pathname == "/instructor" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                                    <span>My Courses</span>
+                                                    <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
+                                                </li>
+                                            </Link>) : null}
+
+                                            {user && user.role && user.role.includes("Admin") ? (<Link href="/admin/instructors" className="relative cursor-pointer group mr-7 font-[500] hover:text-[#4540E1] hover:scale-125 transition-all ease-in-out duration-200 ">
+                                                <li onClick={() => setMobileNavOpen(!mobileNavOpen)} className={router.pathname == "/admin/instructors" ? "text-[#4540E1] font-[900]" : "font-[600]"}>
+                                                    <span>Instructors</span>
+                                                    <span className="absolute -bottom-1 left-0 w-0 h-[2px]  bg-[#4540E1] transition-all group-hover:w-full"></span>
+                                                </li>
+                                            </Link>) : null}
                                             <li>
                                                 <Link href='/profile' onClick={() => setMobileNavOpen(!mobileNavOpen)} className="flex text-gray-700 font-[600] hover:text-gray-900 py-2">Profile</Link>
                                             </li>

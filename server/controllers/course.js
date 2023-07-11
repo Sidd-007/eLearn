@@ -20,8 +20,6 @@ const awsConfig = {
 const S3 = new AWS.S3(awsConfig)
 
 export const uploadImage = async (req, res) => {
-    // console.log(req.body)
-
     try {
 
         const { image } = req.body

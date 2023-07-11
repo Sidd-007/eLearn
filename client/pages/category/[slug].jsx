@@ -31,15 +31,14 @@ const CategoryCourse = ({ courses }) => {
 
     return (
         <div>
-            <div className='mx-28 mt-10 font-poppins'>
+            <div className='flex flex-col justify-center items-center xl:mx-28 mt-10 font-poppins'>
                 {loading ? <Loader /> : (
-                <div className="grid grid-cols-3 gap-28 mb-20">
-                    {categoryCourses && categoryCourses.map((course, index) => (
-                        <div key={index}>
-                            <div className='flex flex-col bg-white rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 max-w-[360px]'>
+                    <div className="grid xl:grid-cols-3 md:grid-cols-2  xl:gap-28 md:gap-10 mb-20 mt-10 auto-rows-auto">
+                        {categoryCourses && categoryCourses.map((course, index) => (
+                            <div key={course._id} className='flex flex-col mt-3 bg-white rounded-lg shadow-lg xl:mt-0 md:mt-0 mb-10 hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 max-w-[360px] h-auto '>
                                 <Link href={`/course/${course.slug}`}>
-                                    <div className="max-h-140 overflow-hidden p-4">
-                                        <img className="w-full h-auto rounded-lg" src={course.image?.Location} alt="" />
+                                    <div className="h-56 w-full overflow-hidden p-4">
+                                        <img className="w-full h-full rounded-lg" src={course.image?.Location} alt="" />
                                     </div>
                                 </Link>
                                 <div className='px-4 flex justify-between items-center'>
@@ -59,15 +58,21 @@ const CategoryCourse = ({ courses }) => {
                                     </div>)}
                                 </div>
                                 <div className="p-4 flex justify-between ">
-                                    <h1 className="text-lg font-semibold text-gray-700">{course.name}</h1>
+                                    <Link href={`/course/${course.slug}`} className="text-lg font-semibold text-gray-700">{course.name}</Link>
                                 </div>
-                                <div className="p-4 flex justify-between ">
+                                <div className="p-4 flex justify-between mb-auto">
                                     <h1 className="text-lg font-semibold text-gray-700 flex ">{course.lessons.length} <span className="ml-2"> Lessons</span></h1>
                                 </div>
+                                <div className="p-4 flex -ml-2">
+                                    {course && course.tags && course.tags.map((tag, index) => (
+                                        <div className="flex bg-gray-200 text-sm  ml-2 p-1 rounded-md text-[#4540E1] items-center" key={index}>
+                                            {tag}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>)}
+                        ))}
+                    </div>)}
 
             </div>
         </div>

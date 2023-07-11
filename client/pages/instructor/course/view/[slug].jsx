@@ -147,13 +147,13 @@ const CourseView = () => {
     return (
         <div className="font-poppins mb-20">
             {course && course ? (
-                <div className="max-w-full mx-24 px-4 sm:px-6 mt-10">
-                    <div className="flex">
+                <div className="max-w-8xl xl:mx-24 mx-3 px-2 xl:px-6 mt-10">
+                    <div className="flex xl:flex-row md:flex-col flex-col">
                         <div className="flex flex-col items-center">
-                            <div className="w-[480px] h-32  ">
-                                <img src={course.image?.Location} className='shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-[480px]  object-cover p-4 bg-white rounded-xl' />
+                            <div className="xl:w-[480px] md:w-[480px] w-[300px]  ">
+                                <img src={course.image?.Location} className=' shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 bg-white rounded-xl' />
                             </div>
-                            <div className="flex mt-48 items-center cursor-pointer" >
+                            <div className="flex xl:mt-48 mt-8 items-center cursor-pointer" >
                                 <div onClick={() => router.push(`/instructor/course/edit/${slug}`)} className="bg-red-400 flex p-2 justify-center items-center rounded-lg">
                                     <span className="text-white font-semibold">
                                         Edit
@@ -162,18 +162,26 @@ const CourseView = () => {
                                 </div>
                                 <div className="flex">
                                     {course && course.lessons && course.lessons.length >= 3 ? course.published ? (
-                                        <div className="bg-red-400 flex p-2 justify-center items-center rounded-lg ml-16 cursor-pointer">
+                                        <div onClick={handleUnpublish} className="bg-red-400 flex p-2 justify-center items-center rounded-lg ml-16 cursor-pointer">
                                             <span className="text-white font-semibold">
                                                 Unpublish
                                             </span>
-                                            <MdOutlineUnpublished onClick={handleUnpublish} title="Publish" className="text-[18px] ml-2 cursor-pointer text-white" />
+                                            <div className="ml-1">
+                                                <svg width="16" height="16" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M17.125 2.925C13.225 -0.975 6.825 -0.975 2.925 2.925C-0.975 6.825 -0.975 13.225 2.925 17.125C6.825 21.025 13.125 21.025 17.025 17.125C20.925 13.225 21.025 6.825 17.125 2.925ZM12.825 14.225L10.025 11.425L7.225 14.225L5.825 12.825L8.625 10.025L5.825 7.225L7.225 5.825L10.025 8.625L12.825 5.825L14.225 7.225L11.425 10.025L14.225 12.825L12.825 14.225Z" fill="#FFFF" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     ) : (
-                                        <div className="bg-green-400 flex p-2 justify-center items-center rounded-lg ml-16 cursor-pointer">
+                                        <div onClick={handlePublish} className="bg-green-400 flex p-2 justify-center items-center rounded-lg ml-16 cursor-pointer">
                                             <span className="text-white font-semibold">
                                                 Publish
                                             </span>
-                                            <MdOutlinePublishedWithChanges onClick={handlePublish} title="Publish" className="text-[18px] ml-2 cursor-pointer text-white" />
+                                            <div className="ml-1">
+                                                <svg width="16" height="16" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M14 0C11.2311 0 8.52431 0.821086 6.22202 2.35943C3.91973 3.89777 2.12532 6.08427 1.06569 8.64243C0.00606596 11.2006 -0.271181 14.0155 0.269012 16.7313C0.809205 19.447 2.14258 21.9416 4.10051 23.8995C6.05845 25.8574 8.55301 27.1908 11.2687 27.731C13.9845 28.2712 16.7994 27.9939 19.3576 26.9343C21.9157 25.8747 24.1022 24.0803 25.6406 21.778C27.1789 19.4757 28 16.7689 28 14C28 10.287 26.525 6.72601 23.8995 4.1005C21.274 1.475 17.713 0 14 0ZM12 19.59L7.00001 14.59L8.59001 13L12 16.41L19.41 9L21.006 10.586L12 19.59Z" fill="#FFFF" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     ) : (
                                         null
@@ -182,9 +190,9 @@ const CourseView = () => {
 
                             </div>
                         </div>
-                        <div className="mx-10">
+                        <div className="xl:mx-10  mt-8  xl:mt-3">
                             <div>
-                                <span className="text-4xl font-semibold">{course.name}</span>
+                            <span className="xl:text-4xl text-2xl w-5/6 font-semibold">{course.name}</span>
                                 <div className="mt-2 flex -ml-2">
                                     {course && course.tags && course.tags.map((tag, index) => (
                                         <div className="flex bg-gray-200 text-sm  ml-2 p-1 rounded-md text-[#4540E1] items-center" key={index}>
@@ -327,7 +335,7 @@ const CourseView = () => {
                                                     watch
                                                 </span>
                                             </div>
-                                            {showVideoModal ? (
+                                            {showVideoModal && lesson.video?.Location.length > 0 ? (
                                                 <>
                                                     <div
                                                         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
@@ -376,13 +384,13 @@ const CourseView = () => {
                 </div>
             ) : <></>
             }
-            <div className="max-w-full mx-24 px-4 sm:px-6 mt-10">
+            <div className="max-w-8xl xl:mx-24 mx-3 px-2 xl:px-6 mt-10">
                 <span className="text-xl font-medium">
                     Student Reviews
                 </span>
-                <div className='grid grid-cols-4 gap-4 mb-20 mt-8 w-full'>
+                <div className='grid xl:grid-cols-3 md:grid-cols-2 grid-cols-2 xl:gap-4 gap-4 mb-20 mt-8 w-full'>
                     {course && course.reviews && course.reviews.map((review) => (
-                        <div className='flex flex-col border-2 border-purple-500 min-w-fit   bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200' key={review._id}>
+                        <div className='flex flex-col border-2 border-gray-200 min-w-fit   bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200' key={review._id}>
                             <div className=" overflow-hidden p-4 text-lg font-semibold">
                                 {review.title}
                             </div>

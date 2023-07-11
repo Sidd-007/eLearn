@@ -6,17 +6,17 @@ const Category = ({ categoryCounts }) => {
     console.log(categoryCounts);
     return (
         <div>
-            <div className='flex justify-between mb-20'>
+            <div className='flex justify-between p-4'>
                 <div className='flex flex-col'>
-                    <span className='text-2xl font-bold'>
+                    <span className='xl:text-2xl md:text-xl text-lg font-bold'>
                         Explore courses by category
                     </span>
-                    <span className='text-lg text-[#A5A1A0] font-medium'>
+                    <span className='xl:text-lg md:text-lg text-sm mt-1 text-[#A5A1A0] font-medium'>
                         Browse top class courses by browsing our category which will be more easy for you.
                     </span>
                 </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 mb-20'>
+            <div className='grid xl:grid-cols-3 md:grid-cols-2 gap-4 mt-4 mb-20'>
                 <div className='bg-[#ffffffd6] p-4 group hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200'>
                     <div className='flex p-2'>
                         <div className='bg-[#E9F8FF] group-hover:fill-white  flex justify-center items-center p-8 rounded-md'>

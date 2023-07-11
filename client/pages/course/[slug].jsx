@@ -113,11 +113,11 @@ const SingleCourse = ({ course }) => {
     return (
         <div className={raleway.className}>
             {course && course ? (
-                <div className="max-w-full mx-24 px-4 sm:px-6 mt-10">
+                <div className="max-w-8xl xl:mx-24 mx-3 px-2 xl:px-6 mt-10">
                     {/* {user.name} */}
-                    <div className="flex">
+                    <div className="flex  xl:flex-row md:flex-col flex-col">
                         <div className="flex flex-col items-center">
-                            <div className="w-[480px]  ">
+                            <div className="xl:w-[480px] md:w-[480px] w-[300px]  ">
                                 <img src={course.image?.Location} className=' shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-4 bg-white rounded-xl' />
                             </div>
                             <div className="flex mt-10 items-center cursor-pointer" >
@@ -127,9 +127,9 @@ const SingleCourse = ({ course }) => {
                                 </button>
                             </div>
                         </div>
-                        <div className="mx-10 mt-3">
-                            <div>
-                                <span className="text-4xl font-semibold">{course.name}</span>
+                        <div className="xl:mx-10  mt-8  xl:mt-3">
+                            {/* <div> */}
+                                <span className="xl:text-4xl text-2xl w-5/6 font-semibold">{course.name}</span>
                                 <div className="mt-2 flex -ml-2">
                                     {course && course.tags && course.tags.map((tag, index) => (
                                         <div className="flex bg-gray-200 text-sm  ml-2 p-1 rounded-md text-[#4540E1] items-center" key={index}>
@@ -137,7 +137,7 @@ const SingleCourse = ({ course }) => {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                            {/* </div> */}
                             <div className="mt-6 flex flex-col">
                                 <div><strong className="text-lg">Description:-</strong> <br />
                                     <span className="">
@@ -151,7 +151,7 @@ const SingleCourse = ({ course }) => {
                                 </span>
                                 <div className="mt-4">
                                     {course && course.lessons && course.lessons.map((lesson, index) => (
-                                        <div className=" flex justify-between items-center bg-white shadow-md p-4 mt-2 mb-8" key={index}>
+                                        <div className=" flex justify-between items-center  bg-white shadow-md p-4 mt-2 mb-8" key={index}>
                                             <div className="flex items-center cursor-pointer ">
                                                 <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M14.5455 0H1.45455C0.654545 0 0 0.672 0 1.49333V10.4533C0 11.2747 0.654545 11.9467 1.45455 11.9467H5.09091V12.6933C5.09091 13.104 5.41818 13.44 5.81818 13.44H10.1818C10.5818 13.44 10.9091 13.104 10.9091 12.6933V11.9467H14.5455C15.3455 11.9467 15.9927 11.2747 15.9927 10.4533L16 1.49333C16 0.672 15.3455 0 14.5455 0ZM13.8182 10.4533H2.18182C1.78182 10.4533 1.45455 10.1173 1.45455 9.70667V2.24C1.45455 1.82933 1.78182 1.49333 2.18182 1.49333H13.8182C14.2182 1.49333 14.5455 1.82933 14.5455 2.24V9.70667C14.5455 10.1173 14.2182 10.4533 13.8182 10.4533Z" fill="black" />

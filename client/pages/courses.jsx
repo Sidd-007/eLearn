@@ -22,19 +22,19 @@ const Courses = ({ courses }) => {
     return (
         <div className="flex flex-col justify-center items-center mt-14">
             {(user && user.role && user.role.includes("Admin")) || (user && user.role && user.role.includes("Instructor")) || (user && user.role && user.role.includes("Pending Verification")) ? (null) : (
-                <button onClick={handleBecomeInstructor} class="box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1 ring-indigo-300 ring-offset-indigo-200 hover:ring-offset-indigo-500 ease focus:outline-none">
+                <button onClick={handleBecomeInstructor} class="box-border relative z-10 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1 ring-indigo-300 ring-offset-indigo-200 hover:ring-offset-indigo-500 ease focus:outline-none">
                     <span class="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
                     <span class="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
                     <span class="relative z-20 flex items-center text-sm">
                         <svg class="relative w-5 h-5 mr-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        Become Intructor
+                        Become Instructor
                     </span>
                 </button>
             )}
-            <div className='grid grid-cols-3 gap-28 mb-20 mt-10 auto-rows-auto'>
+            <div className='grid xl:grid-cols-3 md:grid-cols-2  xl:gap-28 md:gap-10 mb-20 mt-10 auto-rows-auto'>
                 {courses && courses.map((course, index) => (
-                    <div key={index}>
-                        <div className='flex flex-col bg-white rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 max-w-[360px] h-full '>
+                    // <div key={index}>
+                        <div key={course._id} className='flex flex-col bg-white rounded-lg shadow-lg xl:mt-0 md:mt-0 mb-10 hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 max-w-[360px] h-full '>
                             <Link href={`/course/${course.slug}`}>
                                 <div className="h-56 w-full overflow-hidden p-4">
                                     <img className="w-full h-full rounded-lg" src={course.image?.Location} alt="" />
@@ -57,7 +57,7 @@ const Courses = ({ courses }) => {
                                 </div>)}
                             </div>
                             <div className="p-4 flex justify-between ">
-                                <h1 className="text-lg font-semibold text-gray-700">{course.name}</h1>
+                                <Link href={`/course/${course.slug}`} className="text-lg font-semibold text-gray-700">{course.name}</Link>
                             </div>
                             <div className="p-4 flex justify-between mb-auto">
                                 <h1 className="text-lg font-semibold text-gray-700 flex ">{course.lessons.length} <span className="ml-2"> Lessons</span></h1>
@@ -70,7 +70,7 @@ const Courses = ({ courses }) => {
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    // </div>
                 ))}
             </div>
         </div>

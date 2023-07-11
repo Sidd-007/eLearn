@@ -153,14 +153,14 @@ const UserCourse = () => {
         <div className="font-poppins">
             {loading ? (<Loader />) : (null)}
             {course && course ? (
-                <div className="max-w-full mx-24 px-4 sm:px-6 mt-10">
-                    <div className="flex">
-                        <div className="flex flex-col items-center">
-                            <div className="w-[480px] h-32">
+                <div className="max-w-8xl xl:mx-24 mx-3 px-4 sm:px-6 mt-10">
+                    <div className="flex  xl:flex-row md:flex-col flex-col">
+                        <div className="flex flex-col items-center md:mb-10">
+                            <div className="xl:w-[480px] md:w-[480px] w-[300px] h-32">
                                 <img src={course.image?.Location} className='shadow-[0_8px_30px_rgb(0,0,0,0.12)] object-cover p-4 bg-white rounded-xl' />
                             </div>
                         </div>
-                        <div className="mx-10">
+                        <div className="xl:mx-10  mt-24  xl:mt-3 md:mt-40">
                             <div>
                                 <span className="text-4xl font-semibold">{course.name}</span>
                                 <div className="mt-2 flex -ml-2">
@@ -187,12 +187,12 @@ const UserCourse = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="mt-48">
+                    <div className="xl:mt-48 mt-10">
                         <span className="text-xl font-medium">
                             {course && course.lessons && course.lessons.length} Lessons
                         </span>
-                        <div className="mt-4 flex justify-between mb-32">
-                            <div className="bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-md  w-1/6 flex flex-col justify-between ">
+                        <div className="mt-4 flex xl:flex-row md:flex-col flex-col justify-between mb-32">
+                            <div className="bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-md   xl:w-1/6 flex flex-col   justify-between ">
 
                                 {course && course.lessons && course.lessons.map((lesson, index) => (
                                     <div className="flex justify-center items-center">
@@ -222,7 +222,7 @@ const UserCourse = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="shadow-[5px_5px_0px_0px_rgba(40,43,217,0.636)] border-2 rounded-md  border-blue-500 w-full ml-16 p-4">
+                            <div className="shadow-[5px_5px_0px_0px_rgba(40,43,217,0.636)] border-2 rounded-md  border-blue-500 w-full xl:mt-0 mt-10 xl:ml-16 p-4">
                                 {activeLesson &&
                                     course.lessons &&
                                     course.lessons.map((lesson) =>
@@ -235,21 +235,24 @@ const UserCourse = () => {
                                                     </span>
                                                 </div>
                                                 {lesson && lesson.video?.Location ? (<div className="mt-8  flex justify-center items-center ">
-                                                    <div className="bg-white p-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-                                                        <ReactPlayer
-                                                            url={lesson.video?.Location}
-                                                            className="w-full"
+                                                    <div className="bg-white wrapper   p-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+                                                        <video className="w-[600px] h-[350px]" controls>
+                                                            <source  src={lesson.video?.Location} type="video/mp4" />
+                                                        </video>
+                                                        {/* <ReactPlayer
+                                                            url=
+                                                            className="player"
                                                             onEnded={() => markedComplete(lesson._id)}
                                                             controls
-                                                        />
+                                                        /> */}
                                                     </div>
                                                 </div>) : (null)}
                                                 {completedLessons.includes(lesson._id) ? (<button onClick={() => markedInComplete(lesson._id)} class="rounded px-5 mt-8 py-2.5 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
                                                     <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-                                                    <span class="relative">Marked as Incomplete</span>
+                                                    <span class="relative">Mark as Incomplete</span>
                                                 </button>) : (<button onClick={() => markedComplete(lesson._id)} class="rounded px-5 mt-8 py-2.5 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
                                                     <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-                                                    <span class="relative">Marked as Complete</span>
+                                                    <span class="relative">Mark as Complete</span>
                                                 </button>)}
 
                                             </div>

@@ -42,6 +42,10 @@ const register = () => {
         // console.table({ name, password, email})
 
         try {
+            if(password.length > 0)
+            {
+                toast.error("Password length should be more that 6")
+            }
 
             const formData = new FormData();
             formData.append('file', image);

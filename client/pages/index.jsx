@@ -34,19 +34,19 @@ export default function Home({ courses }) {
                         </div>
                     </div>
                 </div>
-                <div className="w-5/6 mx-auto mb-12  rounded-lg shadow-md -mt-20 p-8 bg-[#F1F1FC]">
-                    <div className="flex justify-center space-x-20 items-center">
-                        <div class=" bg-[#F9EA72] shadow-2xl shadow-[#f9e9729c]  rounded-xl px-6 py-4 w-1/6 flex justify-center items-center flex-col">
-                            <h4 className="mb-3 text-2xl font-semibold tracking-tight text-gray-900">120K</h4>
-                            <p className="leading-normal  text-gray-700">Total Students</p>
+                <div className="xl:w-5/6 md:w-5/6 w-[400px]  mx-auto mb-12  md:-mt-20 -mt-10   rounded-lg shadow-md xl:-mt-20 xl:p-8 md:p-8 p-4 bg-[#F1F1FC]">
+                    <div className="flex justify-center xl:space-x-20 md:space-x-20 space-x-4 items-center">
+                        <div class=" bg-[#F9EA72] shadow-2xl shadow-[#f9e9729c]  rounded-xl px-6 py-4 xl:w-1/6 flex justify-center items-center flex-col">
+                            <h4 className="mb-3 xl:mt-0 md:mt-0  xl:text-2xl md:text-xl text-sm font-semibold tracking-tight text-gray-900">120K</h4>
+                            <p className="leading-normal xl:text-lg md:text-lg text-[8px]  text-gray-700">Total Students</p>
                         </div>
-                        <div className=" bg-[#F9EA72] shadow-2xl shadow-[#f9e9729c]  rounded-xl px-6 py-4 w-1/6 flex justify-center items-center flex-col">
-                            <h4 className="mb-3 text-2xl font-semibold tracking-tight text-gray-900">32K</h4>
-                            <p className="leading-normal text-gray-700">Active Educators</p>
+                        <div className=" bg-[#F9EA72] shadow-2xl  shadow-[#f9e9729c]  rounded-xl px-6 py-4 xl:w-1/6 flex justify-center items-center flex-col">
+                            <h4 className="mb-3  xl:text-2xl md:text-xl text-sm font-semibold tracking-tight text-gray-900">32K</h4>
+                            <p className="leading-normal xl:text-lg md:text-lg text-[8px] text-gray-700">Active Educators</p>
                         </div>
-                        <div className=" bg-[#F9EA72] shadow-2xl shadow-[#f9e9729c] rounded-xl px-6 py-4 w-1/6 flex justify-center items-center flex-col">
-                            <h4 className="mb-3 text-2xl font-semibold tracking-tight text-gray-900">140K</h4>
-                            <p className="leading-normal text-gray-700">Total Courses</p>
+                        <div className=" bg-[#F9EA72] shadow-2xl  shadow-[#f9e9729c] rounded-xl px-6 py-4 xl:w-1/6 flex justify-center items-center flex-col">
+                            <h4 className="mb-3  xl:text-2xl md:text-xl text-sm font-semibold tracking-tight text-gray-900">140K</h4>
+                            <p className="leading-normal xl:text-lg md:text-lg text-[8px] text-gray-700">Total Courses</p>
                         </div>
                     </div>
                 </div>
@@ -55,24 +55,23 @@ export default function Home({ courses }) {
                 <Category />
             </section>
             <div className='bg-[#ECEEF9]'>
-                <section className='max-w-7xl mx-auto p-8 '>
-                    <div className='flex  justify-between mb-20'>
+                <section className='max-w-7xl mx-auto xl:p-8 md:p-8 p-4 mt-2 '>
+                    <div className='mb-20 flex justify-between items-center'>
 
                         <div className='flex flex-col'>
-                            <span className='text-2xl font-bold'>
+                            <span className='xl:text-2xl md:text-xl text-lg font-bold'>
                                 Popular courses for you
                             </span>
-                            <span className='text-lg text-[#A5A1A0] font-medium'>
+                            <span className='xl:text-lg md:text-lg text-[10px]  text-[#A5A1A0] font-medium'>
                                 Get the best course with the best prices with world-class tutors.
                             </span>
                         </div>
-                        <Link href="/courses" className=' font-medium flex justify-center items-center  w-fit text-lg rounded-lg border-2 px-5 cursor-pointer transition-all text-[#4540E1] hover:text-white ease-in-out duration-200 border-[#4540e11f] hover:bg-[#4540E1]'>
-                            <span className=''>
-                                See All
-                            </span>
+                        <Link href="/courses" class="rounded xl:px-3 md:px-3 md:py-2 xl:py-2 px-1 py-1 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
+                            <span class="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                            <span class="relative xl:text-lg md:text-lg text-[11px] font-semibold">See All</span>
                         </Link>
                     </div>
-                    <div className='grid grid-cols-3 gap-4 mb-20 auto-rows-auto'>
+                    <div className='grid xl:grid-cols-3 md:grid-cols-2  gap-4 mb-20 auto-rows-auto'>
                         {courses.slice(0, 6).map((course) => (
                             <div className='flex flex-col bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 h-full'>
                                 <div key={course._id}>
@@ -117,8 +116,6 @@ export default function Home({ courses }) {
                                             </div>
                                         ))}
                                     </div>
-
-                                    {/* Average Rating */}
                                 </div>
 
                             </div>
