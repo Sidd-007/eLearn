@@ -7,8 +7,6 @@ import cookieParser from 'cookie-parser';
 import Razorpay from 'razorpay'
 const morgan = require('morgan')
 
-
-
 require("dotenv").config();
 
 const app = express()
@@ -20,12 +18,10 @@ app.use(cors());
 app.use(express.json({ limit: "5mb" }));
 app.use(morgan("dev"));
 
-// app.use((req,res, next) => { 
-//     console.log("This is Middleware"); 
-//     next();
-// })
 
-// app.get('/' , )
+app.get("/*", (req, res) => {
+    res.send("eLearn api is running...\n");
+});
 
 export const instance = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
@@ -42,7 +38,6 @@ app.use(csrfProtection)
 app.get('/api/csrf-token', (req, res) => {
     res.json({ csrfToken: req.csrfToken() })
 })
-
 
 const port = process.env.PORT || 5000
 
