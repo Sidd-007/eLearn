@@ -19,7 +19,7 @@ app.use(express.json({ limit: "5mb" }));
 app.use(morgan("dev"));
 
 
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
     res.send("eLearn api is running...\n");
 });
 
