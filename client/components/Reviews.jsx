@@ -14,7 +14,7 @@ const Reviews = () => {
 
     const loadReviews = async () => {
         try {
-            const { data } = await axios.get('/api/reviews')
+            const { data } = await axios.get(`https://elearn-backend.onrender.com/api/reviews`)
             setReviews(data);
         } catch (error) {
             console.log(error)

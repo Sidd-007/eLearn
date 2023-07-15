@@ -43,7 +43,7 @@ const UserCourse = () => {
 
     const loadCourse = async () => {
         try {
-            const { data } = await axios.get(`/api/course/${slug}`)
+            const { data } = await axios.get(`https://elearn-backend.onrender.com/api/course/${slug}`)
             setCourse(data)
 
         } catch (error) {
@@ -61,14 +61,14 @@ const UserCourse = () => {
     const handleReview = async (event) => {
         event.preventDefault();
         try {
-            const { data } = await axios.get(`/api/course-review-check/${slug}`);
+            const { data } = await axios.get(`https://elearn-backend.onrender.com/api/course-review-check/${slug}`);
             console.log(data)
             if (data?.hasPostedReview) {
                 toast("You have Already Submitted a review for this course")
                 setShowReviewModal(false)
                 setCheckReview(true);
             } else {
-                const response = await axios.post(`/api/course-review/${slug}`, reviewForm);
+                const response = await axios.post(`https://elearn-backend.onrender.com/api/course-review/${slug}`, reviewForm);
 
                 setShowReviewModal(false)
                 toast("Hurray!! You have Successfully Submitted Review for this Course")
@@ -88,7 +88,7 @@ const UserCourse = () => {
 
     const markedComplete = async (lessonId) => {
         try {
-            const { data } = await axios.post(`/api/marked-completed`, {
+            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/marked-completed`, {
                 courseId: course._id,
                 lessonId: lessonId,
             })
@@ -101,7 +101,7 @@ const UserCourse = () => {
     }
     const markedInComplete = async (lessonId) => {
         try {
-            const { data } = await axios.post(`/api/marked-incompleted`, {
+            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/marked-incompleted`, {
                 courseId: course._id,
                 lessonId: lessonId,
             })
@@ -120,7 +120,7 @@ const UserCourse = () => {
     }
     const loadCompletedLessons = async (lessonId) => {
         try {
-            const { data } = await axios.post(`/api/list-completed`, {
+            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/list-completed`, {
                 courseId: course._id,
             })
             setCompletedLessons(data)

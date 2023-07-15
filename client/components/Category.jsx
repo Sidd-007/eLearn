@@ -1,9 +1,9 @@
 import Link from "next/link"
 
-const Category = ({ categoryCounts }) => {
+const Category = () => {
 
 
-    console.log(categoryCounts);
+    // console.log(categoryCounts);
     return (
         <div>
             <div className='flex justify-between p-4'>
@@ -133,15 +133,6 @@ const Category = ({ categoryCounts }) => {
     )
 }
 
-export async function getServerSideProps() {
-    const { data } = await axios.get(`${process.env.API}//course-category-count`)
-
-    return {
-        props: {
-            categoryCounts: data,
-        }
-    }
-}
 
 
 export default Category

@@ -8,7 +8,7 @@ import Link from 'next/link'
 export default function Home({ courses }) {
 
 
-    console.log(courses)
+    // console.log(courses)
     function calculateAverageRating(reviews) {
         if (reviews.length === 0) {
             return "No rating";
@@ -132,7 +132,7 @@ export default function Home({ courses }) {
 }
 
 export async function getServerSideProps() {
-    const { data } = await axios.get(`${process.env.API}/courses`)
+    const { data } = await axios.get(`https://elearn-backend.onrender.com/api/courses`)
 
     return {
         props: {

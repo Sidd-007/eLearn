@@ -42,7 +42,7 @@ const register = () => {
         // console.table({ name, password, email})
 
         try {
-            if(password.length > 0)
+            if(password.length < 6)
             {
                 toast.error("Password length should be more that 6")
             }
@@ -60,7 +60,7 @@ const register = () => {
             // console.log(res)
 
             setLoading(true)
-            const { data } = await axios.post(`/api/register`, {
+            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/register`, {
                 name,
                 email,
                 password,

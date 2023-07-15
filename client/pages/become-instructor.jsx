@@ -40,7 +40,7 @@ const BecomeInstructor = () => {
             console.log(formData);
 
             // setLoading(true);
-            const { data } = await axios.post(`/api/admin/instructor-application/${user._id}`, {
+            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/admin/instructor-application/${user._id}`, {
                 formData,
             });
             router.push("/");

@@ -16,7 +16,7 @@ const Profile = () => {
 
     const loadCourses = async () => {
         try {
-            const { data } = await axios.get('/api/user-courses')
+            const { data } = await axios.get(`https://elearn-backend.onrender.com/api/user-courses`)
             setCourses(data);
         } catch (error) {
             console.log(error)

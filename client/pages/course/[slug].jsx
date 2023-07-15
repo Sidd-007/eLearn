@@ -20,7 +20,7 @@ const SingleCourse = ({ course }) => {
     }, [user, course]);
 
     const checkEnrollment = async () => {
-        const { data } = await axios.get(`/api/check-enrollment/${course._id}`);
+        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/check-enrollment/${course._id}`);
         console.log("CHECK ENROLLMENT", data);
         setEnrolled(data);
     };
@@ -33,11 +33,11 @@ const SingleCourse = ({ course }) => {
     const handlePaidEnrollment = async () => {
         try {
             setLoading(true);
-            if (!user) router.push("/login");
+            // if (!user) router.push("/login");
 
             if (enrolled.status) return router.push(`/user/course/${enrolled.course.slug}`);
 
-            const { data } = await axios.post(`/api/paid-enrollment/${course._id}`);
+            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/paid-enrollment/${course._id}`);
 
             // Add Razor Pay
             const options = {
@@ -56,7 +56,7 @@ const SingleCourse = ({ course }) => {
 
                     try {
 
-                        const { data: enrollmentData } = await axios.post(`/api/paid-enrollment/verify/${course._id}`, {
+                        const { data: enrollmentData } = await axios.post(`https://elearn-backend.onrender.com/api/paid-enrollment/verify/${course._id}`, {
                             course: data.course,
                             userId: user._id,
                             razorpay_order_id,
@@ -90,16 +90,17 @@ const SingleCourse = ({ course }) => {
         }
     }
 
+    
     const handleFreeEnrollment = async (e) => {
         e.preventDefault();
         try {
             // check if user is logged in
-            if (!user) router.push("/login");
+            // if (!user) router.push("/login");
             // check if already enrolled
             if (enrolled.status)
                 return router.push(`/user/course/${enrolled.course.slug}`);
             setLoading(true);
-            const { data } = await axios.post(`/api/free-enrollment/${course._id}`);
+            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/free-enrollment/${course._id}`);
             toast(data.message);
             setLoading(false);
             router.push(`/user/course/${data.course.slug}`);
@@ -175,7 +176,7 @@ const SingleCourse = ({ course }) => {
 }
 
 export async function getServerSideProps({ query }) {
-    const { data } = await axios.get(`${process.env.API}/course/${query.slug}`)
+    const { data } = await axios.get(`https://elearn-backend.onrender.com/api/course/${query.slug}`)
 
     return {
         props: {
