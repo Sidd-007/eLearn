@@ -19,9 +19,6 @@ app.use(express.json({ limit: "5mb" }));
 app.use(morgan("dev"));
 
 
-app.get("/", (req, res) => {
-    res.send("eLearn api is running...\n");
-});
 
 export const instance = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
