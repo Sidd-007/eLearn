@@ -44,7 +44,7 @@ const Provider = ({children}) => {
             let res = error.response;
             if(res.status === 401 && res.config && !res.config._isRetryRequest){
                 return new Promise((resolve, reject) => {
-                    axios.get(`https://elearn-backend.onrender.com/api/logout`)
+                    axios.get(`/api/logout`)
                     .then((data) => {
                         dispatch({type:"LOGOUT"})
                         window.localStorage.removeItem('user')
@@ -62,7 +62,7 @@ const Provider = ({children}) => {
 
     useEffect(() => {
         const getCsrfToken = async () => {
-            const { data } = await axios.get(`https://elearn-backend.onrender.com/api/csrf-token`)
+            const { data } = await axios.get(`/api/csrf-token`)
             // console.log("Csurf", data)
             axios.defaults.headers["X-CSRF-TOKEN"] = data.getCsrfToken;
         }

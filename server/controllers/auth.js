@@ -48,7 +48,7 @@ export const register = async (req, res) => {
         console.log(error);
         return res.send.status(400).send("Error occured")
     }
-    res.send('Register user')
+    // res.send('Register user')
 };
 
 export const login = async (req, res) => {

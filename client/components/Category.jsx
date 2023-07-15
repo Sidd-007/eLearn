@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-const Category = () => {
+const Category = ({ categoryCounts }) => {
 
 
     // console.log(categoryCounts);
@@ -133,6 +133,15 @@ const Category = () => {
     )
 }
 
+export async function getServerSideProps() {
+    const { data } = await axios.get(`${process.env.API}/course-category-count`)
+
+    return {
+        props: {
+            categoryCounts: data,
+        }
+    }
+}
 
 
 export default Category

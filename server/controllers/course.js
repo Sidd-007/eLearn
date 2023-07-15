@@ -339,18 +339,15 @@ export const unpublishCourse = async (req, res) => {
 };
 
 export const courses = async (req, res) => {
-    // console.log("all courses");
     const all = await Course.find({ published: true }).populate("instructor", "_id name").exec();
-    // console.log("============> ", all);
+    
     res.json(all);
 };
 
 
 export const checkEnrollment = async (req, res) => {
     const { courseId } = req.params;
-    // find courses of the currently logged in user
     const user = await User.findById(req.auth._id).exec();
-    // check if course id is found in user courses array
     let ids = [];
     let length = user.courses && user.courses.length
     for (let i = 0; i < length; i++) {

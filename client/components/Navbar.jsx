@@ -45,7 +45,7 @@ function Header() {
     const logout = async () => {
         dispatch({ type: "LOGOUT" });
         window.localStorage.removeItem('user')
-        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/logout`)
+        const { data } = await axios.get(`/api/logout`)
         toast.success(data.message)
         setMobileNavOpen(!mobileNavOpen)
         router.push('/login')

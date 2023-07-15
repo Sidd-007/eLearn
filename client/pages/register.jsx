@@ -60,7 +60,7 @@ const register = () => {
             // console.log(res)
 
             setLoading(true)
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/register`, {
+            const { data } = await axios.post(`/api/register`, {
                 name,
                 email,
                 password,
@@ -69,7 +69,7 @@ const register = () => {
             toast.success("Successfully registered. Please Login")
             setLoading(false)
             router.push('/login')
-            Cookies.remove("user");
+            Cookies.add("user");
         } catch (error) {
             // toast.error(error.response.data)
             setLoading(false)

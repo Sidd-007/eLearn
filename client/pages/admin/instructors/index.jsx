@@ -23,7 +23,7 @@ const Instructors = () => {
 
     const loadInstructors = async () => {
         setLoading(true)
-        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/admin/all-instructors`);
+        const { data } = await axios.get(`/api/admin/all-instructors`);
         setLoading(false)
         setInstructors(data);
     }
@@ -32,14 +32,14 @@ const Instructors = () => {
 
         setShowApplicationModal(true)
 
-        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/admin/instructor-application/${instructorID}`)
+        const { data } = await axios.get(`/api/admin/instructor-application/${instructorID}`)
         setApplication(data);
         // console.log(application)
     }
 
     const handleInstructorRole = async (instructorID) => {
         setShowStatusModal(true)
-        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/admin/users/${instructorID}/role`);
+        const { data } = await axios.get(`/api/admin/users/${instructorID}/role`);
         setInstructorRole(data);
 
 
@@ -55,7 +55,7 @@ const Instructors = () => {
             try {
                 setLoading(true)
                 setShowStatusModal(true)
-                await axios.put(`https://elearn-backend.onrender.com/api/admin/users/${userId}/role`, { role: newRole });
+                await axios.put(`/api/admin/users/${userId}/role`, { role: newRole });
                 setShowStatusModal(false);
                 setLoading(false)
                 toast.success("You have Successfully Changed the Role");

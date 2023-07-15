@@ -36,7 +36,7 @@ const EditCourse = () => {
     }, [])
 
     const loadCourse = async () => {
-        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/course/${slug}`)
+        const { data } = await axios.get(`/api/course/${slug}`)
         if (data) setValues(data);
     }
 
@@ -54,7 +54,7 @@ const EditCourse = () => {
 
         Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
             try {
-                let { data } = await axios.post(`https://elearn-backend.onrender.com/api/course/upload-image`, {
+                let { data } = await axios.post(`/api/course/upload-image`, {
                     image: uri
                 });
 
@@ -74,7 +74,7 @@ const EditCourse = () => {
         // console.log("Remove Image")
         try {
             setValues({ ...values, loading: true });
-            const res = await axios.post(`https://elearn-backend.onrender.com/api/course/remove-image`, { image })
+            const res = await axios.post(`/api/course/remove-image`, { image })
             setImage({})
             setPreview('')
             setValues({ ...values, loading: false });
@@ -92,7 +92,7 @@ const EditCourse = () => {
 
         try {
             // setValues({ ...values, loading: true });
-            const { data } = await axios.put(`https://elearn-backend.onrender.com/api/course/${slug}`, {
+            const { data } = await axios.put(`/api/course/${slug}`, {
                 ...values, image
             })
             toast.success('Course Updated')
@@ -129,7 +129,7 @@ const EditCourse = () => {
 
         setValues({ ...values, lessons: [...allLessons] })
 
-        const { data } = await axios.put(`https://elearn-backend.onrender.com/api/course/${slug}`, {
+        const { data } = await axios.put(`/api/course/${slug}`, {
             ...values, image
         })
         toast.success('Lesson Rearranged')
@@ -143,7 +143,7 @@ const EditCourse = () => {
 
         setValues({ ...values, lessons: allLessons });
 
-        const { data } = await axios.put(`https://elearn-backend.onrender.com/api/course/${slug}/${removed[0]._id}`);
+        const { data } = await axios.put(`/api/course/${slug}/${removed[0]._id}`);
         console.log("Lessons Deleted: ", data)
     }
 
@@ -153,7 +153,7 @@ const EditCourse = () => {
         // console.log("Update Lessons")
         e.preventDefault();
 
-        const { data } = await axios.post(`https://elearn-backend.onrender.com/api/course/lesson/${values._id}/${current._id}`, current);
+        const { data } = await axios.post(`/api/course/lesson/${values._id}/${current._id}`, current);
 
 
         setShowLessonModal(false)
@@ -175,7 +175,7 @@ const EditCourse = () => {
     }
     const handleVideo = async () => {
         if (current.video && current.video.Location) {
-            const res = await axios.post(`https://elearn-backend.onrender.com/api/course/remove-video/${values.instructor._id}`, current.video)
+            const res = await axios.post(`/api/course/remove-video/${values.instructor._id}`, current.video)
         }
 
         const file = e.target.files[0];
@@ -185,7 +185,7 @@ const EditCourse = () => {
         videoData.append("video", file);
         videoData.append("courseId", values._id)
 
-        const { data } = await axios.post(`https://elearn-backend.onrender.com/api/course/video-upload/${values.instructor._id}`, videoData, {
+        const { data } = await axios.post(`/api/course/video-upload/${values.instructor._id}`, videoData, {
             onUploadProgress: e => {
                 setProgressBar(Math.round(100 * e.loaded) / e.total)
             }

@@ -44,14 +44,14 @@ const CourseView = () => {
 
 
     const loadCourse = async () => {
-        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/course/${slug}`)
+        const { data } = await axios.get(`/api/course/${slug}`)
 
         setCourse(data);
     }
 
 
     const loadStudentCount = async () => {
-        const { data } = await axios.get(`https://elearn-backend.onrender.com/api/instructor/student-count`, {
+        const { data } = await axios.get(`/api/instructor/student-count`, {
             courseId: course._id
         })
 
@@ -63,7 +63,7 @@ const CourseView = () => {
 
         try {
             setUploading(true);
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/course/lesson/${slug}/${course.instructor._id}`, values)
+            const { data } = await axios.post(`/api/course/lesson/${slug}/${course.instructor._id}`, values)
             setValues({ ...values, title: "", content: "", video: {} });
             setUploading(false);
             setCourse(data)
@@ -82,7 +82,7 @@ const CourseView = () => {
             setUploading(true);
             const videoData = new FormData()
             videoData.append('video', file);
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/course/video-upload/${course.instructor._id}`, videoData, {
+            const { data } = await axios.post(`/api/course/video-upload/${course.instructor._id}`, videoData, {
                 onUploadProgress: e => {
                     setProgressBar(Math.round(100 * e.loaded) / e.total)
                 }
@@ -98,7 +98,7 @@ const CourseView = () => {
     const handleVideoRemove = async () => {
         try {
             setUploading(true)
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/course/remove-video/${course.instructor._id}`, values.video)
+            const { data } = await axios.post(`/api/course/remove-video/${course.instructor._id}`, values.video)
             console.log(data);
             setValues({ ...values, video: {} })
             setProgressBar(0)
@@ -116,7 +116,7 @@ const CourseView = () => {
                 "Once you publish your course, it will be live in the marketplace for students to enroll."
             );
             if (!answer) return;
-            const { data } = await axios.put(`https://elearn-backend.onrender.com/api/course/publish/${course._id}`);
+            const { data } = await axios.put(`/api/course/publish/${course._id}`);
             toast.success("Congrats. Your course is now live in marketplace!");
             router.push('/instructor')
             setCourse(data);
@@ -132,7 +132,7 @@ const CourseView = () => {
                 "Once you unpublish your course, it will not appear in the marketplace for students to enroll."
             );
             if (!answer) return;
-            const { data } = await axios.put(`https://elearn-backend.onrender.com/api/course/unpublish/${course._id}`);
+            const { data } = await axios.put(`/api/course/unpublish/${course._id}`);
             toast.success("Your course is now removed from the marketplace!");
             router.push('/instructor')
             setCourse(data);

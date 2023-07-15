@@ -37,7 +37,7 @@ const CreateCourse = () => {
 
         Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
             try {
-                let { data } = await axios.post(`https://elearn-backend.onrender.com/api/course/upload-image`, {
+                let { data } = await axios.post(`/api/course/upload-image`, {
                     image: uri
                 });
 
@@ -57,7 +57,7 @@ const CreateCourse = () => {
         // console.log("Remove Image")
         try {
             setValues({ ...values, loading: true });
-            const res = await axios.post(`https://elearn-backend.onrender.com/api/course/remove-image`, { image })
+            const res = await axios.post(`/api/course/remove-image`, { image })
             setImage({})
             setPreview('')
             setValues({ ...values, loading: false });
@@ -75,7 +75,7 @@ const CreateCourse = () => {
 
         try {
             setValues({ ...values, loading: true });
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/course`, {
+            const { data } = await axios.post(`/api/course`, {
                 ...values, image
             })
             toast.success('Cool!! Now you can add Lessons')

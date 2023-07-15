@@ -33,7 +33,7 @@ const login = () => {
 
         try {
             setLoading(true)
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/login`, {
+            const { data } = await axios.post(`/api/login`, {
                 email,
                 password,
             })

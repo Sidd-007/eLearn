@@ -30,7 +30,7 @@ const ForgotPassword = () => {
         e.preventDefault();
 
         try {
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/forgot-password`, { email })
+            const { data } = await axios.post(`/api/forgot-password`, { email })
             setSuccess(true);
 
             toast("Check your email for a Secret Code")
@@ -49,7 +49,7 @@ const ForgotPassword = () => {
 
         try {
             setLoading(true)
-            const { data } = await axios.post(`https://elearn-backend.onrender.com/api/reset-password`, {
+            const { data } = await axios.post(`/api/reset-password`, {
                 email,
                 code,
                 newPassword,
