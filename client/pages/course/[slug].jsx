@@ -176,7 +176,7 @@ const SingleCourse = ({ course }) => {
 }
 
 export async function getServerSideProps({ query }) {
-    const { data } = await axios.get(`https://elearn-backend.onrender.com/api/course/${query.slug}`)
+    const { data } = await axios.get(`${process.env.API}/course/${query.slug}`)
 
     return {
         props: {

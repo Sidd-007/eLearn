@@ -1,3 +1,4 @@
+import Loader from "@/components/Loader"
 import UserRoute from "@/components/routes/UserRoute"
 import { Context } from "@/context"
 import axios from "axios"
@@ -9,6 +10,7 @@ import { useContext, useEffect, useState } from "react"
 const Profile = () => {
     const { state: { user }, } = useContext(Context)
     const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         loadCourses()
@@ -16,14 +18,16 @@ const Profile = () => {
 
     const loadCourses = async () => {
         try {
+            setLoading(true)
             const { data } = await axios.get(`/api/user-courses`)
             setCourses(data);
+            setLoading(false);
         } catch (error) {
             console.log(error)
             toast.error("Failed to Fetch Enrolled Courses")
         }
     }
-    console.log(courses)
+    // console.log(courses.length)
 
     return (
         <UserRoute>
@@ -46,45 +50,56 @@ const Profile = () => {
                                         <div className="mt-3">
                                             <span>Email: {user.email}</span>
                                         </div>
-                                        {user ? (
-                                            <div>
-                                                <div className="mt-6 text-lg font-semibold">
-                                                    <span>Enrolled Courses: </span>
-                                                </div>
-                                                <div>
-                                                    {courses && courses.map((course) => (
-                                                        <div key={course._id}>
-                                                            <div className="flex flex-col bg-white shadow-md p-4 w-full mt-2 mb-8">
-                                                                <div className="flex flex-col  cursor-pointer ">
-                                                                    <img src={course.image ? course.image?.Location : "/course.png"} alt={course.name} className="w-24" />
-                                                                    <div className="flex justify-center font-medium text-lg flex-col mt-2">
-                                                                        <span>
-                                                                            {course.name}
-                                                                        </span>
-                                                                    </div>
-                                                                    <div className="flex items-center justify-between mt-4">
-                                                                        <div className="flex flex-col">
-                                                                            <span>
-                                                                                {course.lessons.length} Lessons
-                                                                            </span>
-                                                                            <span>
-                                                                                By {course.instructor.name}
-                                                                            </span>
-                                                                        </div>
-                                                                        <Link href={`/user/course/${course.slug}`} class="rounded px-2  py-2.5 overflow-hidden group bg-blue-500 relative hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300">
-                                                                            <span class="absolute right-0 w-6 h-20 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-                                                                            <span class="relative text-sm font-semibold">Go to course</span>
-                                                                        </Link>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ) : (null)}
+
                                     </div>
                                 </div>
+                                {loading ? (
+                                        <div className="mt-44 mb-20 ">
+                                            <Loader />
+                                        </div>
+                                ) : (
+                                    <div className="mt-40">
+                                        <div className=" font-semibold mb-8">
+                                            <span className="text-xl">Enrolled Courses: </span>
+                                        </div>
+                                        <div className='grid xl:grid-cols-3 md:grid-cols-2  gap-4 mb-20 auto-rows-auto'>
+                                            {courses.length > 0 && courses.map((course) => (
+                                                <div className='flex flex-col bg-white rounded-lg hover:shadow-xl cursor-pointer transition-all ease-in-out duration-200 h-full'>
+                                                    <div key={course._id}>
+                                                        <Link href={`/user/course/${course.slug}`}>
+                                                            <div className="h-64 w-full overflow-hidden p-4">
+                                                                <img className="w-full h-full rounded-lg" src={course.image?.Location} alt="" />
+                                                            </div>
+                                                        </Link>
+                                                        <div className='px-4 flex justify-between items-center'>
+                                                            <div className='p-2 max-w-fit rounded-lg border-2 text-sm px-4 cursor-pointer transition-all text-[#4540E1]  ease-in-out duration-200 border-[#4540e11f] bg-[#ECEEF9]'>
+                                                                <span className=' font-medium '>
+                                                                    {course.category}
+                                                                </span>
+                                                            </div>
+                                                            {course.paid ? (<div className=''>
+                                                                <span className='ml-2 mt-4 text-red-500 font-semibold bg-red-200 p-2 border-2 rounded-xl border-[#ff00001f]'>
+                                                                    Rs {course.price}
+                                                                </span>
+                                                            </div>) : (<div className=''>
+                                                                <span className='ml-2 mt-4  font-semibold bg-green-200 p-2 border-2 rounded-xl text-green-500 border-[#00ff371f]'>
+                                                                    Free
+                                                                </span>
+                                                            </div>)}
+                                                        </div>
+                                                        <div className="p-4 flex justify-between ">
+                                                            <h1 className="text-lg font-semibold text-gray-700">{course.name}</h1>
+                                                        </div>
+                                                        <div className="p-4">
+                                                            Instructor: {course.instructor.name}
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )
                     }
