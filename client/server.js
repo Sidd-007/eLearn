@@ -15,7 +15,7 @@ app.prepare().then(() => {
         server.use(
             "/api",
             createProxyMiddleware({
-                target: "https://elearn-new.onrender.com/api",
+                target: "http://localhost:5000",
                 changeOrigin: true,
             })
         )

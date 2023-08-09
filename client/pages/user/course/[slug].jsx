@@ -203,12 +203,12 @@ const UserCourse = () => {
                                     <div className="flex justify-center items-center">
 
                                         <div
-                                            className={`flex justify-center  items-center whitespace-nowrap w-fit bg-white shadow-md p-2 mt-2 mb-8`}
+                                            className={`flex flex-col justify-center  items-center whitespace-wrap w-fit bg-white shadow-md p-2 mt-2 mb-8`}
                                             key={lesson._id}
                                         >
                                             <button
                                                 onClick={() => handleLessonClick(lesson._id)}
-                                                className={`${activeLesson === lesson._id ? 'bg-blue-100 ' : ''
+                                                className={`${activeLesson === lesson._id ? 'bg-blue-100 ' : 'test-sm'
                                                     }`}
                                             >
                                                 {lesson.title}
@@ -311,7 +311,6 @@ const UserCourse = () => {
                                                             <textarea
                                                                 name="courseFeedback"
                                                                 rows="4"
-                                                                maxLength={25}
                                                                 value={reviewForm.courseFeedback}
                                                                 onChange={handleInputChange}
                                                                 className="resize-none mt-2 block p-2.5 w-full text-sm bg-gray-50 placeholder:text-gray-400 border-[2px] focus:ring-[#4540E1] focus:border-[#4540E1] rounded py-2 text-gray-700 focus:outline-none" placeholder="Course..."

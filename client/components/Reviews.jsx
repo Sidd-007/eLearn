@@ -54,7 +54,7 @@ const Reviews = () => {
                             </div>
 
                             <div className="p-4 my-auto pb-12  flex  ">
-                                <div className='w-1/2 '>
+                                <div className=''>
                                     <h1 className="text-sm font-medium text-gray-700">{review.courseFeedback}</h1>
                                 </div>
                             </div>

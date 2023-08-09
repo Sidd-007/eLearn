@@ -389,7 +389,9 @@ export const paidEnrollment = async (req, res) => {
     try {
         const course = await Course.findById(req.params.courseId).exec();
 
-        const totalAmount = course.price;
+        let totalAmount = course.price;
+
+        totalAmount = parseInt(totalAmount); 
 
         const options = {
             amount: Number(totalAmount) * 100,

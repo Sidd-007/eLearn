@@ -34,8 +34,8 @@ export default function Home({ courses }) {
                         </div>
                     </div>
                 </div>
-                <div className="xl:w-5/6 md:w-5/6 w-[400px]  mx-auto mb-12  md:-mt-20 -mt-10   rounded-lg shadow-md xl:-mt-20 xl:p-8 md:p-8 p-4 bg-[#F1F1FC]">
-                    <div className="flex justify-center xl:space-x-20 md:space-x-20 space-x-4 items-center">
+                <div className="xl:w-5/6 md:w-5/6 w-[300px]  mx-auto mb-12  md:-mt-20 -mt-10   rounded-lg shadow-md xl:-mt-20 xl:p-8 md:p-8 p-4 bg-[#F1F1FC]">
+                    <div className="flex justify-center xl:flex-row md:flex-row xl:space-x-20 md:space-x-20 space-x-4 items-center">
                         <div class=" bg-[#F9EA72] shadow-2xl shadow-[#f9e9729c]  rounded-xl px-6 py-4 xl:w-1/6 flex justify-center items-center flex-col">
                             <h4 className="mb-3 xl:mt-0 md:mt-0  xl:text-2xl md:text-xl text-sm font-semibold tracking-tight text-gray-900">120K</h4>
                             <p className="leading-normal xl:text-lg md:text-lg text-[8px]  text-gray-700">Total Students</p>

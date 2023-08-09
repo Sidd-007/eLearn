@@ -59,7 +59,7 @@ const Profile = () => {
                                         </div>
                                 ) : (
                                     <div className="mt-40">
-                                        <div className=" font-semibold mb-8">
+                                        <div className="font-semibold mb-8">
                                             <span className="text-xl">Enrolled Courses: </span>
                                         </div>
                                         <div className='grid xl:grid-cols-3 md:grid-cols-2  gap-4 mb-20 auto-rows-auto'>
